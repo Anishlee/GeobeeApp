@@ -84,6 +84,7 @@ export default class Quiz extends PureComponent {
       backgroundColork: '',
       backgroundColorl: '',
       stateArray: [],
+      previousArray: [],
       moving: 'false',
       flag: null,
     };
@@ -126,7 +127,11 @@ export default class Quiz extends PureComponent {
     for (let i = 0; i < Amount; i++) {
       this.state.stateArray[i] = 'false';
     }
+    for (let j = 0; j < Amount; j++) {
+      this.state.previousArray[j] = 'false';
+    }
     console.log(this.state.stateArray);
+    console.log(this.state.previousArray);
   }
 
   Questions = () => {
@@ -172,7 +177,6 @@ export default class Quiz extends PureComponent {
         userSession[this.state.count - 1].answerOption &&
       userSession[this.state.count - 1].selectedOption != ''
     ) {
-      this.state.stateArray[this.state.count - 1] = 'false';
       if (userSession[this.state.count - 1].answerOption == 'itemOne') {
         this.setState({backgroundColora: '#4EA688'});
         this.setState({backgroundColorb: '#dcdcdc'});
@@ -396,6 +400,7 @@ export default class Quiz extends PureComponent {
       notSelected: '',
       count: this.state.count - 1,
     });
+    this.state.previousArray[this.state.count - 2] = 'true';
   };
   animate() {
     const y = this.props.navigation.getParam('y', 'value');
@@ -437,7 +442,10 @@ export default class Quiz extends PureComponent {
     let totalAnswers = 0;
     for (let i = 0; i < userSession.length; i++) {
       console.log(this.state.stateArray);
-      if (this.state.stateArray[i] == 'true') {
+      if (
+        this.state.stateArray[i] == 'true' &&
+        userSession[i].selectedOption == ''
+      ) {
         totalAnswers++;
         totalQuestions.push({
           questionId: i + 1,
@@ -446,10 +454,7 @@ export default class Quiz extends PureComponent {
           correctAnswer: userSession[i].answer,
         });
       }
-      if (
-        userSession[i].answerOption == userSession[i].selectedOption &&
-        this.state.stateArray[i] != 'true'
-      ) {
+      if (userSession[i].answerOption == userSession[i].selectedOption) {
         correctAnswers++;
         totalQuestions.push({
           questionId: i + 1,
@@ -458,10 +463,7 @@ export default class Quiz extends PureComponent {
         });
         totalAnswers++;
         console.log('*********correctAnswers', correctAnswers);
-      } else if (
-        this.state.stateArray[i] == 'false' &&
-        userSession[i].selectedOption != ''
-      ) {
+      } else if (userSession[i].selectedOption != '') {
         if (userSession[i].selectedOption == 'itemOne') {
           userChoice = userSession[i].choice1;
         } else if (userSession[i].selectedOption == 'itemTwo') {
@@ -505,6 +507,7 @@ export default class Quiz extends PureComponent {
     console.log('*********correctAnswers', totalQuestions);
   };
   selectionOfChoise = (selectedOption, currentQuestion, userSession) => {
+    console.log('*********', selectedOption);
     if (
       currentQuestion &&
       currentQuestion['selectedOption'] !== selectedOption
@@ -557,7 +560,7 @@ export default class Quiz extends PureComponent {
               <FastImage
                 style={{
                   width: '100%',
-                  height: '6.25%',
+                  height: '17.5%',
                   marginBottom: '10%',
                   marginTop: '50%',
                   marginLeft: '1.5%',
@@ -588,7 +591,7 @@ export default class Quiz extends PureComponent {
                 width={225}
                 height={10}
               />
-              <Text style={{marginBottom: 2000}}></Text>
+              <Text style={{marginBottom: 450}}></Text>
             </View>
           </ScrollView>
           <View
@@ -991,7 +994,7 @@ export default class Quiz extends PureComponent {
                   </View>
                 </View>
 
-                <Container style={{marginTop: 0}}>
+                <Container style={{marginTop: 0, marginBottom: -250}}>
                   {this.state.notSelected == 'error' && (
                     <Text style={styles.errorText}>
                       {' '}
@@ -1189,6 +1192,7 @@ export default class Quiz extends PureComponent {
                             borderColor: '#73c7ab',
                             backgroundColor: 'transparent',
                             marginTop: 15,
+                            marginBottom: -100,
                           }}
                           onPress={() => this.previousQuestion(userSession)}>
                           <Text
@@ -1202,32 +1206,63 @@ export default class Quiz extends PureComponent {
                           </Text>
                         </Button>
                       )}
-                      {count <= userSession.length && (
-                        <Button
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            flex: 1,
-                            alignContent: 'center',
-                            marginLeft: 10,
-                            marginRight: 10,
-                            borderWidth: 4,
-                            borderColor: '#73c7ab',
-                            backgroundColor: 'transparent',
-                            marginTop: 15,
-                          }}
-                          onPress={() => this.skipQuestion(userSession)}>
-                          <Text
+                      {count <= userSession.length &&
+                        userSession[this.state.count - 1].selectedOption ==
+                          '' && (
+                          <Button
                             style={{
-                              fontSize: 18,
-                              fontWeight: '500',
-                              color: 'black',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              flex: 1,
+                              alignContent: 'center',
+                              marginLeft: 10,
+                              marginRight: 10,
+                              borderWidth: 4,
+                              borderColor: '#73c7ab',
+                              backgroundColor: 'transparent',
+                              marginTop: 15,
+                              marginBottom: -100,
+                            }}
+                            onPress={() => this.skipQuestion(userSession)}>
+                            <Text
+                              style={{
+                                fontSize: 18,
+                                fontWeight: '500',
+                                color: 'black',
+                              }}>
+                              {' '}
+                              Skip{' '}
+                            </Text>
+                          </Button>
+                        )}
+                      {count <= userSession.length &&
+                        userSession[this.state.count - 1].selectedOption !=
+                          '' && (
+                          <Button
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'center',
+                              flex: 1,
+                              alignContent: 'center',
+                              marginLeft: 10,
+                              marginRight: 10,
+                              borderWidth: 4,
+                              borderColor: '#dcdcdc',
+                              backgroundColor: 'transparent',
+                              marginTop: 15,
+                              marginBottom: -100,
                             }}>
-                            {' '}
-                            Skip{' '}
-                          </Text>
-                        </Button>
-                      )}
+                            <Text
+                              style={{
+                                fontSize: 18,
+                                fontWeight: '500',
+                                color: '#dcdcdc',
+                              }}>
+                              {' '}
+                              Skip{' '}
+                            </Text>
+                          </Button>
+                        )}
                       {count < userSession.length && this.state.counter == 1 && (
                         <Button
                           style={{
@@ -1241,6 +1276,7 @@ export default class Quiz extends PureComponent {
                             borderColor: '#73c7ab',
                             backgroundColor: 'transparent',
                             marginTop: 15,
+                            marginBottom: -100,
                           }}
                           onPress={() => this.nextQuestion(userSession, false)}>
                           <Text
@@ -1267,6 +1303,7 @@ export default class Quiz extends PureComponent {
                             borderColor: '#73c7ab',
                             backgroundColor: 'transparent',
                             marginTop: 15,
+                            marginBottom: -100,
                           }}
                           onPress={() => this.submitPage(userSession)}>
                           <Text
@@ -1279,16 +1316,23 @@ export default class Quiz extends PureComponent {
                           </Text>
                         </Button>
                       )}
+                      <Text style={{marginBottom: -100}}></Text>
                     </View>
                   </Content>
                 </Container>
               </View>
             )}
           />
-          <Text style={{marginBottom: -70}}></Text>
-          <View style={{backgroundColor: '#73c7ab'}}>
+          <View
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: '#73c7ab',
+            }}>
             <Image
-              style={{backgroundColor: '#73c7ab', height: 90}}
+              style={{backgroundColor: '#73c7ab', height: 60}}
               source={require('../assets/map_patternd.png')}
             />
           </View>
@@ -1327,7 +1371,7 @@ export default class Quiz extends PureComponent {
             <FastImage
               style={{
                 width: '100%',
-                height: '6.25%',
+                height: '17.5%',
                 marginBottom: '10%',
                 marginTop: '50%',
                 marginLeft: '1.5%',
@@ -1358,7 +1402,7 @@ export default class Quiz extends PureComponent {
               width={225}
               height={10}
             />
-            <Text style={{marginBottom: 2000}}></Text>
+            <Text style={{marginBottom: 450}}></Text>
           </View>
         </ScrollView>
         <View

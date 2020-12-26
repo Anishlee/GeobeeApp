@@ -96,7 +96,7 @@ export default class ReviewPageFlag extends Component {
               <Text
                 style={{fontSize: 20, fontWeight: '500', textAlign: 'center'}}
                 onPress={() => this.props.navigation.navigate('SummaryPage')}>
-                Home
+                Return to Summary
               </Text>
             </Button>
           </View>

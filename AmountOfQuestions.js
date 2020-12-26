@@ -5,6 +5,9 @@ import {Button} from 'native-base';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 
 export default class AmountOfQuestions extends Component {
+  static navigationOptions = {
+    title: 'Amount Of Questions',
+  };
   constructor() {
     super();
 
