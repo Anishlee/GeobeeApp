@@ -6,7 +6,7 @@ import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 
 export default class AmountOfQuestions extends Component {
   static navigationOptions = {
-    title: 'Amount Of Questions',
+    headerBackTitle: 'ChooseYourQuiz',
   };
   constructor() {
     super();
@@ -37,14 +37,16 @@ export default class AmountOfQuestions extends Component {
       });
       */
   //http://localhost:8080/geobee/getQuestionsByState?stateName=Minnesota&size=10
+
   onPress(Amount) {
     if (Amount != '') {
       const x = this.props.navigation.getParam('x', 'value');
-
+      const user = this.props.navigation.getParam('user', {});
       if (x == 'States') {
         this.props.navigation.navigate('Quiz', {
           amount: Amount,
           y: 'States',
+          user: user,
         });
       }
       if (x == 'General') {
@@ -52,24 +54,28 @@ export default class AmountOfQuestions extends Component {
         this.props.navigation.navigate('Quiz', {
           amount: Amount,
           y: 'General',
+          user: user,
         });
       }
       if (x == 'Nicknames') {
         this.props.navigation.navigate('Quiz', {
           amount: Amount,
           y: 'Nicknames',
+          user: user,
         });
       }
       if (x == 'Flags') {
         this.props.navigation.navigate('Quiz', {
           amount: Amount,
           y: 'Flags',
+          user: user,
         });
       }
       if (x == 'Capitals') {
         this.props.navigation.navigate('Quiz', {
           amount: Amount,
           y: 'Capitals',
+          user: user,
         });
       }
     } else {
@@ -122,18 +128,21 @@ export default class AmountOfQuestions extends Component {
               placeholder="Select the number of questions below"
               placeholderStyle={{
                 fontWeight: '500',
+                color: 'black',
                 fontSize: RFValue(17.5, 750),
               }}
               containerStyle={{
                 height: 60,
-                marginBottom: 30,
+                marginBottom: '10%',
               }}
-              style={({backgroundColor: '#fafafa'}, {marginTop: 10})}
+              style={({backgroundColor: '#fafafa'}, {marginTop: '2%'})}
               itemStyle={{
                 justifyContent: 'center',
+                color: 'black',
               }}
               labelStyle={{
                 textAlign: 'center',
+                color: 'black',
               }}
               dropDownStyle={({backgroundColor: '#fafafa'}, {marginTop: 10})}
               onChangeItem={(item) =>
@@ -169,7 +178,7 @@ export default class AmountOfQuestions extends Component {
                 Submit
               </Text>
             </Button>
-            <Text style={{marginBottom: 399}}></Text>
+            <Text style={{marginBottom: '90%'}}></Text>
           </View>
         </ScrollView>
         <View
@@ -201,7 +210,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: 50,
     marginRight: 50,
-    marginBottom: 100,
+    marginBottom: '26%',
     marginTop: 10,
   },
   titleStyle: {

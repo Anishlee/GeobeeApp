@@ -12,15 +12,20 @@
   "dependencies": {
     "@invertase/react-native-apple-authentication": "^2.1.0",
     "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-firebase/app": "^10.4.0",
+    "@react-native-firebase/auth": "^10.4.0",
+    "@react-navigation/stack": "^5.12.8",
     "native-base": "^2.13.14",
     "react": "16.13.1",
     "react-dom": "^16.13.1",
     "react-native": "0.63.2",
     "react-native-animated-ellipsis": "^2.0.0",
+    "react-native-apple-authentication": "^1.0.8",
     "react-native-cli": "^2.0.1",
     "react-native-dropdown-picker": "^3.6.8",
     "react-native-fast-image": "^8.3.4",
     "react-native-gesture-handler": "^1.8.0",
+    "react-native-google-signin": "^2.1.1",
     "react-native-multiple-choice": "^0.0.8",
     "react-native-normalize": "^1.0.1",
     "react-native-progress": "^4.1.2",
@@ -45,5 +50,8 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "resolutions": {
+    "@react-native-community/cli-debugger-ui": "4.7.0"
   }
 }

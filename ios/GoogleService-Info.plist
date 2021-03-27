@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>647666075800-46h7rjimhm9du40cvhug8jus5u6fjguv.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.647666075800-46h7rjimhm9du40cvhug8jus5u6fjguv</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBcvL0d9zf4uC0_PMNxoe54sXm2hrfUAP4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>647666075800</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.reactnative.geobee</string>
+	<key>PROJECT_ID</key>
+	<string>geobee-54852</string>
+	<key>STORAGE_BUCKET</key>
+	<string>geobee-54852.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:647666075800:ios:cffe607067a99a4cd768ed</string>
+	<key>DATABASE_URL</key>
+	<string>https://geobee-54852-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

@@ -13,10 +13,8 @@ export default class ChooseYourQuiz extends Component {
       count: 1,
     };
   }
-  static navigationOptions = {
-    title: 'Choose Your Quiz',
-  };
   render() {
+    const user = this.props.navigation.getParam('user', {});
     return (
       <View>
         <ScrollView>
@@ -42,6 +40,7 @@ export default class ChooseYourQuiz extends Component {
               onPress={() =>
                 this.props.navigation.navigate('AmountOfQuestions', {
                   x: 'Capitals',
+                  user: user,
                 })
               }>
               <Text
@@ -56,6 +55,7 @@ export default class ChooseYourQuiz extends Component {
               onPress={() =>
                 this.props.navigation.navigate('AmountOfQuestions', {
                   x: 'Nicknames',
+                  user: user,
                 })
               }>
               <Text
@@ -70,6 +70,7 @@ export default class ChooseYourQuiz extends Component {
               onPress={() =>
                 this.props.navigation.navigate('AmountOfQuestions', {
                   x: 'Flags',
+                  user: user,
                 })
               }>
               <Text
@@ -84,6 +85,7 @@ export default class ChooseYourQuiz extends Component {
               onPress={() =>
                 this.props.navigation.navigate('AmountOfQuestions', {
                   x: 'General',
+                  user: user,
                 })
               }>
               <Text
@@ -98,6 +100,7 @@ export default class ChooseYourQuiz extends Component {
               onPress={() =>
                 this.props.navigation.navigate('AmountOfQuestions', {
                   x: 'States',
+                  user: user,
                 })
               }>
               <Text

@@ -1,15 +1,4 @@
-import React, {Component} from 'react';
-import {View, StyleSheet, Text, Image, ScrollView} from 'react-native';
-import FastImage from 'react-native-fast-image';
-import {Dimensions} from 'react-native';
-import {Button} from 'native-base';
-
-import {
-  AppleButton,
-  appleAuth,
-} from '@invertase/react-native-apple-authentication';
-
-class AppleSignInTest extends Component {
+/*class AppleSignInTest extends Component {
   constructor() {
     super();
 
@@ -133,39 +122,218 @@ class AppleSignInTest extends Component {
     );
   }
 }
-//<AppleSignInTest />
-export default class HomePage extends Component {
+//<AppleSignInTest />*/
+
+import React, {useEffect} from 'react';
+import {View, StyleSheet, Text, Image, ScrollView} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import {Dimensions} from 'react-native';
+import {Button} from 'native-base';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from 'react-native-google-signin';
+import {
+  AppleButton,
+  appleAuth,
+} from '@invertase/react-native-apple-authentication';
+import auth from '@react-native-firebase/auth';
+
+export default class HomePage extends React.Component {
   static navigationOptions = {
     title: 'Home Page',
+  };
+  constructor() {
+    super();
+    this.state = {
+      loggedIn: false,
+      setloggedIn: false,
+      userInfo: null,
+      setUserInfo: [],
+    };
+  }
+  /*onAuthStateChanged(user) {
+    this.setState({userInfo: user});
+    console.log(user);
+    if (user) {
+      this.setState({loggedIn: true});
+    }
+  }*/
+  componentDidMount() {
+    GoogleSignin.configure({
+      scopes: ['email'],
+      // what API you want to access on behalf of the user, default is email and profile
+      webClientId:
+        '647666075800-46h7rjimhm9du40cvhug8jus5u6fjguv.apps.googleusercontent.com',
+      // client ID of type WEB for your server (needed to verify user ID and offline access)
+      offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+    });
+    //const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    //return subscriber; // unsubscribe on unmount
+  }
+
+  componentDidUpdate() {
+    GoogleSignin.configure({
+      scopes: ['email'], // what API you want to access on behalf of the user, default is email and profile
+      webClientId:
+        '647666075800-46h7rjimhm9du40cvhug8jus5u6fjguv.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+
+      offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+    });
+  }
+  signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const signInResponse = await GoogleSignin.signIn();
+      const {accessToken, idToken, user} = signInResponse;
+      this.setState({userInfo: user});
+      console.log(user);
+      const credential = auth.GoogleAuthProvider.credential(
+        idToken,
+        accessToken,
+      );
+      await auth().signInWithCredential(credential);
+      this.setState({loggedIn: true});
+      this.props.navigation.navigate('Dashboard', {user: user});
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+        alert('Cancel');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        alert('Signin in progress');
+        // operation (f.e. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        alert('PLAY_SERVICES_NOT_AVAILABLE');
+        // play services not available or outdated
+      } else {
+        // some other error happened
+
+        console.error(error);
+      }
+    }
+  };
+  playWithoutSigningIn = () => {
+    console.log(this.state.userInfo);
+    if (this.state.userInfo == null) {
+      this.props.navigation.navigate('Dashboard');
+    }
+  };
+  signOut = async () => {
+    try {
+      await GoogleSignin.signOut();
+      auth()
+        .signOut()
+        .then(() => alert('You are signed out!'));
+      this.setState({loggedIn: false});
+      //this.setState({userInfo: {}});
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  signInWithLogging = () => {
+    let user = this.state.userInfo;
+    this.props.navigation.navigate('Dashboard', {
+      user: user,
+    });
   };
   render() {
     return (
       <View>
         <ScrollView>
           <View style={{backgroundColor: '#ffffff'}}>
-            <FastImage
-              style={{
-                width: '100%',
-                height: '17.5%',
-                marginBottom: '10%',
-                marginTop: '50%',
-                marginLeft: '1.5%',
-              }}
-              source={require('./amountOfQuestions/Logo1.png')}
-            />
-            <Button
-              large
-              full
-              style={styles.StyleforButton}
-              onPress={() => this.props.navigation.navigate('Dashboard')}>
-              <Text
-                style={{fontSize: 20, fontWeight: '500', textAlign: 'center'}}>
-                {'Play'}
-              </Text>
-            </Button>
+            {this.state.loggedIn == false && (
+              <FastImage
+                style={{
+                  width: '105%',
+                  height: '17.5%',
+                  marginBottom: '10%',
+                  marginTop: '50%',
+                  marginLeft: '1.5%',
+                }}
+                source={require('./amountOfQuestions/Logo1.png')}
+              />
+            )}
+            {this.state.loggedIn == true && (
+              <FastImage
+                style={{
+                  width: '105%',
+                  height: '16.5%',
+                  marginBottom: '10%',
+                  marginTop: '50%',
+                  marginLeft: '1.5%',
+                }}
+                source={require('./amountOfQuestions/Logo1.png')}
+              />
+            )}
+            {this.state.loggedIn == false && (
+              <View style={{alignItems: 'center'}}>
+                <GoogleSigninButton
+                  style={{width: 192, height: 48}}
+                  size={GoogleSigninButton.Size.Wide}
+                  color={GoogleSigninButton.Color.Light}
+                  onPress={() => this.signIn()}
+                />
+              </View>
+            )}
+
+            <Text>{this.state.loggedIn}</Text>
+            {this.state.loggedIn && (
+              <Button
+                large
+                full
+                style={styles.StyleforButton}
+                onPress={() => this.signInWithLogging()}>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: '500',
+                    textAlign: 'center',
+                  }}>
+                  {'Play'}
+                </Text>
+              </Button>
+            )}
+            {this.state.loggedIn && (
+              <View>
+                <Button
+                  large
+                  full
+                  style={styles.StyleforButton}
+                  onPress={() => this.signOut()}>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontWeight: '500',
+                      textAlign: 'center',
+                    }}>
+                    {' '}
+                    Log Out{' '}
+                  </Text>
+                </Button>
+              </View>
+            )}
+            {!this.state.loggedIn && (
+              <Button
+                large
+                full
+                style={styles.StyleforButton}
+                onPress={() => this.playWithoutSigningIn()}>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: '500',
+                    textAlign: 'center',
+                  }}>
+                  {'Play without signing in'}
+                </Text>
+              </Button>
+            )}
+
             <Text style={{marginBottom: 450}}></Text>
           </View>
         </ScrollView>
+
         <View
           style={{
             position: 'absolute',

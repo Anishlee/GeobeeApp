@@ -14,11 +14,16 @@ export default class Dashboard extends Component {
 
     this.state = {
       data: [],
+      data1: [],
       fetching: true,
+      user: null,
     };
   }
   componentDidMount() {
-    const url = `http://35.188.135.212:8080/geobee/getRandomFactOfTheDay`;
+    const user = this.props.navigation.getParam('user', 'value');
+    this.setState({user: user});
+    console.log(user);
+    const url = `http://104.197.165.71:8080/geobee/getRandomFactOfTheDay`;
     fetch(url, {
       method: 'GET',
     })
@@ -31,13 +36,39 @@ export default class Dashboard extends Component {
           });
       });
   }
+  onPress = () => {
+    const user = this.props.navigation.getParam('user', 'value');
+    let email = user.email;
+    //http://localhost:8080/geobee/getUserSavedSession?email=soumyathebest1@gmail.com
+    const url = `http://localhost:8080/geobee/getUserSavedSession?email=${email}`;
+    fetch(url, {
+      method: 'GET',
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({data1: json})
+          .catch((err) => console.error(err))
+          .finally(() => {
+            this.setState({fetching: false});
+          });
+      });
+    this.props.navigation.navigate('Quiz', {
+      data1: this.state.data1.questions,
+      y: 'Resume',
+      user: user,
+    });
+  };
   render() {
     console.log(this.state.data);
+    const user = this.props.navigation.getParam('user', 'value');
+    console.log('life');
+    // console.log(this.state.user);
     return (
       <View>
         <ScrollView>
           <View style={{backgroundColor: '#ffffff', flex: 1}}>
             <Text style={styles.titleStyle}> U.S. Geography Quiz </Text>
+
             <View
               style={{
                 alignItems: 'center',
@@ -48,9 +79,12 @@ export default class Dashboard extends Component {
                 alignSelf: 'stretch',
                 width: '50%',
                 marginLeft: '25%',
-                marginBottom: 15,
+                marginBottom: '5%',
               }}
             />
+            {this.state.user != 'value' && (
+              <Text style={styles.Green}> Welcome {user.name}</Text>
+            )}
             <FlatList
               data={this.state.data}
               renderItem={({item}) => (
@@ -59,7 +93,7 @@ export default class Dashboard extends Component {
                     style={{
                       fontSize: 25,
                       fontWeight: 'bold',
-                      marginBottom: 15,
+                      marginBottom: '5%',
                       textAlign: 'center',
                     }}>
                     {' '}
@@ -76,8 +110,25 @@ export default class Dashboard extends Component {
             <Button
               large
               full
+              style={styles.StyleforButton2}
+              onPress={() =>
+                this.props.navigation.navigate('ChooseYourQuiz', {user: user})
+              }>
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: '500',
+                  color: 'black',
+                  textAlign: 'center',
+                }}>
+                New Game
+              </Text>
+            </Button>
+            <Button
+              large
+              full
               style={styles.StyleforButton}
-              onPress={() => this.props.navigation.navigate('ChooseYourQuiz')}>
+              onPress={() => this.onPress()}>
               <Text
                 style={{
                   fontSize: 20,
@@ -85,10 +136,9 @@ export default class Dashboard extends Component {
                   color: 'white',
                   textAlign: 'center',
                 }}>
-                New Game
+                Resume Game
               </Text>
             </Button>
-
             <Text style={{marginBottom: 350}}></Text>
           </View>
         </ScrollView>
@@ -123,7 +173,7 @@ const styles = StyleSheet.create({
     marginLeft: '10%',
     marginRight: '10%',
     marginBottom: '5%',
-    marginTop: '5%',
+    marginTop: 0,
   },
   StyleforButton2: {
     alignItems: 'center',
@@ -136,8 +186,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: '10%',
     marginRight: '10%',
-    marginBottom: 40,
-    marginTop: 10,
+    marginBottom: '5%',
+    marginTop: '2%',
   },
   item: {
     marginHorizontal: 10,
@@ -156,6 +206,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 35,
     marginTop: '10%',
-    marginBottom: '10%',
+    marginBottom: '5%',
+  },
+  Green: {
+    // Define your HEX color code here.
+    textAlign: 'center',
+    color: '#4EA688',
+    fontWeight: 'bold',
+    fontSize: 25,
+    marginBottom: '5%',
   },
 });
