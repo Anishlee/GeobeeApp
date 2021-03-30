@@ -23,7 +23,7 @@ export default class Dashboard extends Component {
     const user = this.props.navigation.getParam('user', 'value');
     this.setState({user: user});
     console.log(user);
-    const url = `http://104.197.165.71:8080/geobee/getRandomFactOfTheDay`;
+    const url = `http://localhost:8080/geobee/getRandomFactOfTheDay`;
     fetch(url, {
       method: 'GET',
     })

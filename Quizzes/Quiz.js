@@ -159,7 +159,7 @@ export default class Quiz extends PureComponent {
     console.log(y);
     console.log(State);
     if (y == 'General') {
-      x = `http://104.197.165.71:8080/geobee/getMiscQuestions?size=${Amount}`;
+      x = `http://localhost:8080/geobee/getMiscQuestions?size=${Amount}`;
     }
     if (y == 'Resume') {
       console.log('In resume game');
@@ -167,16 +167,16 @@ export default class Quiz extends PureComponent {
       x = `http://localhost:8080/geobee/getUserSavedSession?email=${email}`;
     }
     if (y == 'Capitals') {
-      x = `http://104.197.165.71:8080/geobee/getCapitalQuestions?size=${Amount}`;
+      x = `http://localhost:8080/geobee/getCapitalQuestions?size=${Amount}`;
     }
     if (y == 'States') {
-      x = `http://104.197.165.71:8080/geobee/getQuestionsByState?size=${Amount}`;
+      x = `http://localhost:8080/geobee/getQuestionsByState?size=${Amount}`;
     }
     if (y == 'Nicknames') {
-      x = `http://104.197.165.71:8080/geobee/getNicknamesQuestions?size=${Amount}`;
+      x = `http://localhost:8080/geobee/getNicknamesQuestions?size=${Amount}`;
     }
     if (y == 'Flags') {
-      x = `http://104.197.165.71:8080/geobee/getFlagsQuestions?size=${Amount}`;
+      x = `http://localhost:8080/geobee/getFlagsQuestions?size=${Amount}`;
     }
     if (y != 'Resume') {
       fetch(x, {
@@ -495,7 +495,7 @@ export default class Quiz extends PureComponent {
     let userChoice = '';
     let totalQuestions = [];
     let totalAnswers = 0;
-    for (let i = 0; i < userSession.length; i++) {
+    for (let i = 0; i < this.state.data.length; i++) {
       console.log(this.state.stateArray);
       if (
         this.state.stateArray[i] == 'true' &&
@@ -599,7 +599,8 @@ export default class Quiz extends PureComponent {
       console.log(userSession[i].userOption);
       if (
         y == 'Resume' &&
-        userSession[i].userOption == userSession[i].choice1
+        (userSession[i].userOption == userSession[i].choice1 ||
+          userSession[i].selectedOption == 'itemOne')
       ) {
         console.log('AAAAAAAAAAAAAAAAAAAAAA');
         totalAnswers++;
@@ -617,10 +618,10 @@ export default class Quiz extends PureComponent {
           questionType: userSession[i].questionType,
           userOption: userSession[i].choice1,
         });
-      }
-      if (
+      } else if (
         y == 'Resume' &&
-        userSession[i].userOption == userSession[i].choice2
+        (userSession[i].userOption == userSession[i].choice2 ||
+          userSession[i].selectedOption == 'itemTwo')
       ) {
         console.log('ABBBBBBBAAAAAAAAAAAAAAAAAAA');
         totalAnswers++;
@@ -638,10 +639,10 @@ export default class Quiz extends PureComponent {
           questionType: userSession[i].questionType,
           userOption: userSession[i].choice2,
         });
-      }
-      if (
+      } else if (
         y == 'Resume' &&
-        userSession[i].userOption == userSession[i].choice3
+        (userSession[i].userOption == userSession[i].choice3 ||
+          userSession[i].selectedOption == 'itemThree')
       ) {
         console.log('ACCCCCCCCAAAAAAAAAAAA');
         totalAnswers++;
@@ -659,10 +660,10 @@ export default class Quiz extends PureComponent {
           questionType: userSession[i].questionType,
           userOption: userSession[i].choice3,
         });
-      }
-      if (
+      } else if (
         y == 'Resume' &&
-        userSession[i].userOption == userSession[i].choice4
+        (userSession[i].userOption == userSession[i].choice4 ||
+          userSession[i].selectedOption == 'itemFour')
       ) {
         console.log('AADDDDDDDDDAAAAAAAAAAAAA');
         totalAnswers++;
@@ -680,44 +681,22 @@ export default class Quiz extends PureComponent {
           questionType: userSession[i].questionType,
           userOption: userSession[i].choice4,
         });
-      } else if (
-        y == 'Resume' &&
-        userSession[i].selectedOption == '' &&
-        (userSession[i].userOption == '' ||
-          (userSession[i].userOption == 'None' &&
-            !(
-              userSession[this.state.count - 1].userOption ==
-                userSession[i].choice1 ||
-              userSession[this.state.count - 1].userOption ==
-                userSession[i].choice2 ||
-              userSession[this.state.count - 1].userOption ==
-                userSession[i].choice3 ||
-              userSession[this.state.count - 1].userOption ==
-                userSession[i].choice4
-            )))
-      ) {
-        console.log('AEEEEEEEEEEAAAA');
-        totalAnswers++;
-        totalQuestions.push({
-          answer: userSession[i].answer,
-          answerOption: userSession[i].answerOption,
-          choice1: userSession[i].choice1,
-          choice2: userSession[i].choice2,
-          choice3: userSession[i].choice3,
-          choice4: userSession[i].choice4,
-          question: userSession[i].question,
-          questionId: i + 1,
-          questionId2: userSession[i].questionId2,
-          questionSubType: userSession[i].questionSubType,
-          questionType: userSession[i].questionType,
-          userOption: 'None',
-        });
       } else {
         if (
-          userSession[i].selectedOption == '' &&
           y == 'Resume' &&
+          userSession[i].selectedOption == '' &&
           (userSession[i].userOption == '' ||
-            userSession[i].userOption == 'None')
+            (userSession[i].userOption == 'None' &&
+              !(
+                userSession[this.state.count - 1].userOption ==
+                  userSession[i].choice1 ||
+                userSession[this.state.count - 1].userOption ==
+                  userSession[i].choice2 ||
+                userSession[this.state.count - 1].userOption ==
+                  userSession[i].choice3 ||
+                userSession[this.state.count - 1].userOption ==
+                  userSession[i].choice4
+              )))
         ) {
           console.log('AAAAAAAAFFFFFFFFFFFFAAAAAAAAAA');
           totalAnswers++;
