@@ -49,13 +49,13 @@ import {
   Image,
   YellowBox,
   ScrollView,
+  LogBox
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import normalize from 'react-native-normalize';
 import {RFValue} from 'react-native-responsive-fontsize';
-YellowBox.ignoreWarnings([
-  'Animated: `useNativeDriver` was not specified. This is a required option and must be explicitly set to `true` or `false`',
-]);
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 export default class Quiz extends PureComponent {
   constructor() {
     super();
