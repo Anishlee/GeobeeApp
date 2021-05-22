@@ -29,7 +29,7 @@ export default function Apple() {
 
     // If the Auth is authorized, we call our API and pass the authorization code.
     if (credentialState === AppleAuthCredentialState.AUTHORIZED) {
-      console.log(appleAuthRequestResponse.authorizationCode);
+      //console.log(appleAuthRequestResponse.authorizationCode);
 
       Axios.post('http://172.20.10.9:3000/auth/apple', {
         token: appleAuthRequestResponse.authorizationCode,

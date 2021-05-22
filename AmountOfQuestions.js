@@ -22,8 +22,8 @@ export default class AmountOfQuestions extends Component {
   }
   /*
    const Amount = this.props.navigation.getParam('amount', 'value');
-    console.log(Amount);
-    const url = `http://localhost:8080/geobee/getCapitalQuestions?size=${Amount}`;
+    //console.log(Amount);
+    const url = `http://35.239.39.107:8080/geobee/getCapitalQuestions?size=${Amount}`;
     fetch(url, {
       method: 'GET',
     })
@@ -36,7 +36,7 @@ export default class AmountOfQuestions extends Component {
           });
       });
       */
-  //http://localhost:8080/geobee/getQuestionsByState?stateName=Minnesota&size=10
+  //http://35.239.39.107:8080/geobee/getQuestionsByState?stateName=Minnesota&size=10
 
   onPress(Amount) {
     if (Amount != '') {

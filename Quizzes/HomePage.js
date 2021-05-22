@@ -11,7 +11,7 @@
 
   componentDidMount() {
     this.authCredentialListener = appleAuth.onCredentialRevoked(async () => {
-      console.log('Credential Revoked for the users');
+      //console.log('Credential Revoked for the users');
 
       this.fetchAndUpdateCredentialState().catch((error) => {
         return this.setState({
@@ -36,7 +36,7 @@
   }
 
   signIn = async () => {
-    console.log('Begining Apple ');
+    //console.log('Begining Apple ');
 
     try {
       debugger;
@@ -46,7 +46,7 @@
       });
       this.props.navigation.navigate('QuizDashboard');
 
-      console.log('Apple Auth Request Response ', appleAuthRequestResponse);
+      //console.log('Apple Auth Request Response ', appleAuthRequestResponse);
 
       const {
         user: newUser,
@@ -68,24 +68,24 @@
         });
 
       if (identityToken) {
-        console.log('Apple Sign In Identity Token is ', identityToken);
+        //console.log('Apple Sign In Identity Token is ', identityToken);
         this.props.navigation.navigate('QuizDashboard');
       } else {
-        console.log('Sign In via Apple is failed');
+        //console.log('Sign In via Apple is failed');
       }
 
       if (realUserStatus === appleAuth.UserStatus.LIKELY_REAL) {
-        console.log('The user is an authentic real user profile');
+        //console.log('The user is an authentic real user profile');
         this.props.navigation.navigate('QuizDashboard');
       }
 
-      console.log(
+      //console.log(
         `Apple authentication is completed for ${this.user} with email id ${email}`,
       );
     } catch (error) {
       if (error.code === appleAuth.Error.CANCELED) {
         console.error(JSON.stringify(error));
-        console.log('User Sign In for Apple is canceled');
+        //console.log('User Sign In for Apple is canceled');
       } else {
         console.error(JSON.stringify(error));
       }
@@ -125,7 +125,7 @@
 //<AppleSignInTest />*/
 
 import React, {useEffect} from 'react';
-import {View, StyleSheet, Text, Image, ScrollView} from 'react-native';
+import {View, StyleSheet, Text, Image, ScrollView, Alert} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Dimensions} from 'react-native';
 import {Button} from 'native-base';
@@ -155,7 +155,7 @@ export default class HomePage extends React.Component {
   }
   /*onAuthStateChanged(user) {
     this.setState({userInfo: user});
-    console.log(user);
+    //console.log(user);
     if (user) {
       this.setState({loggedIn: true});
     }
@@ -188,23 +188,72 @@ export default class HomePage extends React.Component {
       const signInResponse = await GoogleSignin.signIn();
       const {accessToken, idToken, user} = signInResponse;
       this.setState({userInfo: user});
-      console.log(user);
+      //console.log(user);
       const credential = auth.GoogleAuthProvider.credential(
         idToken,
         accessToken,
       );
       await auth().signInWithCredential(credential);
       this.setState({loggedIn: true});
-      this.props.navigation.navigate('Dashboard', {user: user});
+      this.props.navigation.navigate('Dashboard', {user: user, isUser: true});
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
-        alert('Cancel');
+        Alert.alert(
+          'You have canceled the sign-in with google process. Would you like to try again?',
+          '',
+          [
+            {
+              text: 'Yes',
+              onPress: () => this.signIn(), style: 'default'
+            },
+            {
+              text: 'No',
+              onPress: () => Alert.alert(
+                'Have a good day!',
+                '',
+                [
+                  {
+                    text: 'Ok',
+                    style: 'default'
+                  },
+                ],
+                {cancelable: true},
+                //clicking out side of alert will not cancel
+              ),
+              style: 'destructive'
+            },
+          ],
+          {cancelable: false},
+          //clicking out side of alert will not cancel
+        );
       } else if (error.code === statusCodes.IN_PROGRESS) {
-        alert('Signin in progress');
+        Alert.alert(
+          'You are already being signed in',
+          '',
+          [
+            {
+              text: 'Ok',
+              style: 'default'
+            },
+          ],
+          {cancelable: false},
+          //clicking out side of alert will not cancel
+        );
         // operation (f.e. sign in) is in progress already
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        alert('PLAY_SERVICES_NOT_AVAILABLE');
+        Alert.alert(
+          'Your google play services are outdated or not available.',
+          '',
+          [
+            {
+              text: 'Ok',
+              style: 'destructive'
+            },
+          ],
+          {cancelable: false},
+          //clicking out side of alert will not cancel
+        );
         // play services not available or outdated
       } else {
         // some other error happened
@@ -214,7 +263,7 @@ export default class HomePage extends React.Component {
     }
   };
   playWithoutSigningIn = () => {
-    console.log(this.state.userInfo);
+    //console.log(this.state.userInfo);
     if (this.state.userInfo == null) {
       this.props.navigation.navigate('Dashboard');
     }
@@ -224,8 +273,36 @@ export default class HomePage extends React.Component {
       await GoogleSignin.signOut();
       auth()
         .signOut()
-        .then(() => alert('You are signed out!'));
+        .then(Alert.alert(
+          'You are signed out! Would you like to sign back in?',
+          '',
+          [
+            {
+              text: 'Yes',
+              onPress: () => this.signIn(), style: 'default'
+            },
+            {
+              text: 'No',
+              onPress: () => Alert.alert(
+                'Have a good day!',
+                '',
+                [
+                  {
+                    text: 'Ok',
+                    style: 'default'
+                  },
+                ],
+                {cancelable: true},
+                //clicking out side of alert will not cancel
+              ),
+              style: 'destructive'
+            },
+          ],
+          {cancelable: false},
+          //clicking out side of alert will not cancel
+        ));
       this.setState({loggedIn: false});
+      this.setState({userInfo: null});
       //this.setState({userInfo: {}});
     } catch (error) {
       console.error(error);
@@ -235,6 +312,7 @@ export default class HomePage extends React.Component {
     let user = this.state.userInfo;
     this.props.navigation.navigate('Dashboard', {
       user: user,
+      isUser: true,
     });
   };
   render() {
@@ -246,10 +324,10 @@ export default class HomePage extends React.Component {
               <FastImage
                 style={{
                   width: '105%',
-                  height: '17.5%',
+                  height: '18.5%',
                   marginBottom: '10%',
                   marginTop: '50%',
-                  marginLeft: '1.5%',
+                  marginLeft: '0%',
                 }}
                 source={require('./amountOfQuestions/Logo1.png')}
               />
@@ -261,7 +339,7 @@ export default class HomePage extends React.Component {
                   height: '16.5%',
                   marginBottom: '10%',
                   marginTop: '50%',
-                  marginLeft: '1.5%',
+                  marginLeft: '0%',
                 }}
                 source={require('./amountOfQuestions/Logo1.png')}
               />
@@ -330,7 +408,7 @@ export default class HomePage extends React.Component {
               </Button>
             )}
 
-            <Text style={{marginBottom: 450}}></Text>
+            <Text style={{marginBottom: 377.5}}></Text>
           </View>
         </ScrollView>
 

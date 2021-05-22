@@ -45,7 +45,7 @@ export default class SummaryPage extends Component {
     }
   };
   render() {
-    console.log('hiiiiiiiiiiu');
+    //console.log('hiiiiiiiiiiu');
 
     const Amount = this.props.navigation.getParam('amount', 'value');
     const State = this.props.navigation.getParam('state', 'value');
@@ -87,26 +87,14 @@ export default class SummaryPage extends Component {
                 Review
               </Text>
             </Button>
-            <Button
-              large
-              full
-              style={styles.StyleforButton}
-              onPress={() =>
-                this.props.navigation.navigate('ChooseYourQuiz', {})
-              }>
-              <Text
-                style={{fontSize: 20, fontWeight: '500', textAlign: 'center'}}>
-                Try A New Quiz
-              </Text>
-            </Button>
             <Button large full style={styles.StyleforButton2}>
               <Text
                 style={{fontSize: 20, fontWeight: '500', textAlign: 'center'}}
-                onPress={() => this.props.navigation.navigate('Dashboard')}>
+                onPress={() => this.props.navigation.navigate('Dashboard', {isResumeTrue: false})}>
                 Return to Dashboard
               </Text>
             </Button>
-            <Text style={{marginBottom: 220}}></Text>
+            <Text style={{marginBottom: 303}}></Text>
           </View>
         </ScrollView>
         <View

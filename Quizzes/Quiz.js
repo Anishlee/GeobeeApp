@@ -1,4 +1,4 @@
-//http://localhost:8080/geobee/getCapitalQuestions?size=${Amount}
+//http://35.239.39.107:8080/geobee/getCapitalQuestions?size=${Amount}
 import React, {PureComponent} from 'react';
 import {Dimensions} from 'react-native';
 /*
@@ -90,6 +90,7 @@ export default class Quiz extends PureComponent {
       user: null,
       data1: [],
       sent: false,
+      totalQuestions: [],
     };
   }
   componentDidUpdate(prevProps, prevState) {
@@ -103,7 +104,7 @@ export default class Quiz extends PureComponent {
         this.setState({data: []});
         this.CapitalsQuestions();
       }, 500);
-      // console.log("userInfo username", JSON.stringify(userInfo.username));
+      // //console.log("userInfo username", JSON.stringify(userInfo.username));
     }
 
     if (Array.isArray(userSession) && userSession.length > 0) {
@@ -133,19 +134,19 @@ export default class Quiz extends PureComponent {
     this.setState({user: user});
     this.setState({sent: sent});
     // this.setState({data1: data1});
-    console.log("'*********data", this.state.data);
-    console.log("'*********data1", this.state.data1);
-    console.log("'*********data1", this.state.data1.questions);
-    console.log(this.state.sent);
-    console.log(Amount);
+    //console.log("'*********data", this.state.data);
+    //console.log("'*********data1", this.state.data1);
+    //console.log("'*********data1", this.state.data1.questions);
+    //console.log(this.state.sent);
+    //console.log(Amount);
     for (let i = 0; i < Amount; i++) {
       this.state.stateArray[i] = 'false';
     }
     for (let j = 0; j < Amount; j++) {
       this.state.previousArray[j] = 'false';
     }
-    console.log(this.state.stateArray);
-    console.log(this.state.previousArray);
+    //console.log(this.state.stateArray);
+    //console.log(this.state.previousArray);
   }
 
   Questions = () => {
@@ -155,28 +156,28 @@ export default class Quiz extends PureComponent {
     const Amount = this.props.navigation.getParam('amount', 'value');
     const State = this.props.navigation.getParam('state', 'value');
     const y = this.props.navigation.getParam('y', 'value');
-    console.log(Amount);
-    console.log(y);
-    console.log(State);
+    //console.log(Amount);
+    //console.log(y);
+    //console.log(State);
     if (y == 'General') {
-      x = `http://localhost:8080/geobee/getMiscQuestions?size=${Amount}`;
+      x = `http://35.239.39.107:8080/geobee/getMiscQuestions?size=${Amount}`;
     }
     if (y == 'Resume') {
-      console.log('In resume game');
-
-      x = `http://localhost:8080/geobee/getUserSavedSession?email=${email}`;
+      //console.log('In resume game');
+      
+      x = `http://35.239.39.107:8080/geobee/getUserSavedSession?email=${email}`;
     }
     if (y == 'Capitals') {
-      x = `http://localhost:8080/geobee/getCapitalQuestions?size=${Amount}`;
+      x = `http://35.239.39.107:8080/geobee/getCapitalQuestions?size=${Amount}`;
     }
     if (y == 'States') {
-      x = `http://localhost:8080/geobee/getQuestionsByState?size=${Amount}`;
+      x = `http://35.239.39.107:8080/geobee/getQuestionsByState?size=${Amount}`;
     }
     if (y == 'Nicknames') {
-      x = `http://localhost:8080/geobee/getNicknamesQuestions?size=${Amount}`;
+      x = `http:/35.239.39.107:8080/geobee/getNicknamesQuestions?size=${Amount}`;
     }
     if (y == 'Flags') {
-      x = `http://localhost:8080/geobee/getFlagsQuestions?size=${Amount}`;
+      x = `http:/35.239.39.107:8080/geobee/getFlagsQuestions?size=${Amount}`;
     }
     if (y != 'Resume') {
       fetch(x, {
@@ -185,7 +186,7 @@ export default class Quiz extends PureComponent {
         .then((response) => response.json())
         .then((json) => {
           this.setState({data: json});
-          console.log('YOOOOOOOOO!');
+          //console.log('YOOOOOOOOO!');
           console
             .log(this.state.data)
             .catch((err) => console.error(err))
@@ -200,7 +201,7 @@ export default class Quiz extends PureComponent {
       })
         .then((response) => response.json())
         .then((json) => {
-          console.log('HELLO');
+          //console.log('HELLO');
           this.setState({data: json.questionsArray});
           this.setState({data1: json});
           this.setState({count: json.count})
@@ -209,11 +210,16 @@ export default class Quiz extends PureComponent {
               this.setState({fetching: false});
             });
         });
+        console.log(((this.state.data1.flag == true && y == 'Resume') || y == 'Flags' ), "AM I TRUE!")
+        console.log(y == 'Resume', "HERE");
+        console.log(this.state.data1, "CSY");
+        console.log(this.state.data, "CSY");
+        //console.log(this.state.count);
     }
   };
-
+  
   nextQuestion = (userSession) => {
-    // console.log('*********user didnt pick any choice', this.state.count);
+    // //console.log('*********user didnt pick any choice', this.state.count);
     if (
       userSession[this.state.count - 1].selectedOption ==
         userSession[this.state.count - 1].answerOption &&
@@ -378,7 +384,8 @@ export default class Quiz extends PureComponent {
         userSession[this.state.count - 1].userOption == 'None') &&
       y == 'Resume'
     ) {
-      console.log('*********user didnt pick any choice');
+      console.log(this.state.data1, "HHYHEYHEYEHYEHYEHEYHEYEH");
+      //console.log('*********user didnt pick any choice');
       this.setState({notSelected: 'error'});
       return;
     }
@@ -386,7 +393,7 @@ export default class Quiz extends PureComponent {
       userSession[this.state.count - 1].selectedOption == '' &&
       y != 'Resume'
     ) {
-      console.log('*********user didnt pick any choice');
+      //console.log('*********user didnt pick any choice');
       this.setState({notSelected: 'error'});
       return;
     }
@@ -421,7 +428,7 @@ export default class Quiz extends PureComponent {
     }
   };
   skipQuestion = (userSession) => {
-    console.log(this.state.count < userSession.length);
+    //console.log(this.state.count < userSession.length);
 
     if (this.state.count < userSession.length) {
       this.setState({
@@ -450,7 +457,7 @@ export default class Quiz extends PureComponent {
     }
   };
   previousQuestion = (userSession) => {
-    console.log(this.state.count < userSession.length);
+    //console.log(this.state.count < userSession.length);
     this.setState({
       notSelected: '',
       count: this.state.count - 1,
@@ -470,7 +477,7 @@ export default class Quiz extends PureComponent {
             progress = 1;
           }
           this.setState({progress});
-        }, 200);
+        }, 50);
       }, 150);
     }
     if (y == 'States') {
@@ -484,19 +491,293 @@ export default class Quiz extends PureComponent {
             progress = 1;
           }
           this.setState({progress});
-        }, 200);
+        }, 50);
       }, 150);
     }
   }
   submitPage = (userSession) => {
-    console.log('*********submitpage called');
+    const y = this.props.navigation.getParam('y', 'value');
+    //console.log('*********submitpage called');
     let correctAnswers = 0;
     let wrongAnswers = 0;
     let userChoice = '';
     let totalQuestions = [];
     let totalAnswers = 0;
+    if (y == 'Resume') {
+      for (let i = 0; i < this.state.data.length; i++) {
+        userChoice = '';
+        const y = this.props.navigation.getParam('y', 'value');
+        //console.log(this.state.data.length);
+        //console.log(this.state.stateArray);
+        //console.log(userSession[this.state.count - 1].userOption);
+        //console.log(userSession[i].userOption);
+        if (
+          y == 'Resume' &&
+          (userSession[i].userOption == userSession[i].choice1 ||
+            userSession[i].selectedOption == 'itemOne')
+        ) {
+          //console.log('AAAAAAAAAAAAAAAAAAAAAA');
+          //console.log(userSession[i].answer, "answer");
+          //console.log(userSession[i].userOption, "userOption");
+          //console.log(userSession[i].selectedOption, "selectedOption");
+          totalAnswers++;
+          if (userSession[i].answer == userSession[i].userOption || userSession[i].selectedOption == userSession[i].answer || userSession[i].selectedOption == userSession[i].answerOption) {
+            correctAnswers++;
+            totalQuestions.push({
+              correctAnswer: userSession[i].answer,
+              answerOption: userSession[i].answerOption,
+              choice1: userSession[i].choice1,
+              choice2: userSession[i].choice2,
+              choice3: userSession[i].choice3,
+              choice4: userSession[i].choice4,
+              question: userSession[i].question,
+              questionId: i + 1,
+              questionId2: userSession[i].questionId2,
+              questionSubType: userSession[i].questionSubType,
+              questionType: userSession[i].questionType,
+              userOption: userSession[i].choice1,
+            });
+          }
+          else {
+            wrongAnswers++;
+            totalQuestions.push({
+              correctAnswer: userSession[i].answer,
+              answerOption: userSession[i].answerOption,
+              choice1: userSession[i].choice1,
+              choice2: userSession[i].choice2,
+              choice3: userSession[i].choice3,
+              choice4: userSession[i].choice4,
+              question: userSession[i].question,
+              questionId: i + 1,
+              questionId2: userSession[i].questionId2,
+              questionSubType: userSession[i].questionSubType,
+              questionType: userSession[i].questionType,
+              userOption: userSession[i].choice1,
+              selectedOption: userSession[i].choice1,
+            });
+          }
+        } else if (
+          y == 'Resume' &&
+          (userSession[i].userOption == userSession[i].choice2 ||
+            userSession[i].selectedOption == 'itemTwo')
+        ) {
+          //console.log('ABBBBBBBAAAAAAAAAAAAAAAAAAA');
+          //console.log(userSession[i].answer, "answer");
+          //console.log(userSession[i].userOption, "userOption");
+          //console.log(userSession[i].selectedOption, "selectedOption");
+          totalAnswers++;
+          if (userSession[i].answer == userSession[i].userOption || userSession[i].selectedOption == userSession[i].answer || userSession[i].selectedOption == userSession[i].answerOption) {
+            correctAnswers++;
+            totalQuestions.push({
+              correctAnswer: userSession[i].answer,
+              answerOption: userSession[i].answerOption,
+              choice1: userSession[i].choice1,
+              choice2: userSession[i].choice2,
+              choice3: userSession[i].choice3,
+              choice4: userSession[i].choice4,
+              question: userSession[i].question,
+              questionId: i + 1,
+              questionId2: userSession[i].questionId2,
+              questionSubType: userSession[i].questionSubType,
+              questionType: userSession[i].questionType,
+              userOption: userSession[i].choice2,
+            });
+          }
+          else {
+            wrongAnswers++;
+            totalQuestions.push({
+              correctAnswer: userSession[i].answer,
+              answerOption: userSession[i].answerOption,
+              choice1: userSession[i].choice1,
+              choice2: userSession[i].choice2,
+              choice3: userSession[i].choice3,
+              choice4: userSession[i].choice4,
+              question: userSession[i].question,
+              questionId: i + 1,
+              questionId2: userSession[i].questionId2,
+              questionSubType: userSession[i].questionSubType,
+              questionType: userSession[i].questionType,
+              userOption: userSession[i].choice2,
+              selectedOption: userSession[i].choice2,
+            });
+          }
+        } else if (
+          y == 'Resume' &&
+          (userSession[i].userOption == userSession[i].choice3 ||
+            userSession[i].selectedOption == 'itemThree')
+        ) {
+          //console.log('ACCCCCCCCAAAAAAAAAAAA');
+          //console.log(userSession[i].answer, "answer");
+          //console.log(userSession[i].userOption, "userOption");
+          //console.log(userSession[i].selectedOption, "selectedOption");
+          totalAnswers++;
+          if (userSession[i].answer == userSession[i].userOption || userSession[i].selectedOption == userSession[i].answer || userSession[i].selectedOption == userSession[i].answerOption) {
+            correctAnswers++;
+            totalQuestions.push({
+              correctAnswer: userSession[i].answer,
+              answerOption: userSession[i].answerOption,
+              choice1: userSession[i].choice1,
+              choice2: userSession[i].choice2,
+              choice3: userSession[i].choice3,
+              choice4: userSession[i].choice4,
+              question: userSession[i].question,
+              questionId: i + 1,
+              questionId2: userSession[i].questionId2,
+              questionSubType: userSession[i].questionSubType,
+              questionType: userSession[i].questionType,
+              userOption: userSession[i].choice3,
+            });
+          }
+          else {
+            wrongAnswers++;
+            totalQuestions.push({       
+              correctAnswer: userSession[i].answer,
+              answerOption: userSession[i].answerOption,
+              choice1: userSession[i].choice1,
+              choice2: userSession[i].choice2,
+              choice3: userSession[i].choice3,
+              choice4: userSession[i].choice4,
+              question: userSession[i].question,
+              questionId: i + 1,
+              questionId2: userSession[i].questionId2,
+              questionSubType: userSession[i].questionSubType,
+              questionType: userSession[i].questionType,
+              userOption: userSession[i].choice3,
+              selectedOption: userSession[i].choice3,
+            });
+          }
+        } else if (
+          y == 'Resume' &&
+          (userSession[i].userOption == userSession[i].choice4 ||
+            userSession[i].selectedOption == 'itemFour')
+        ) {
+          //console.log('AADDDDDDDDDAAAAAAAAAAAAA');
+          //console.log(userSession[i].answer, "answer");
+          //console.log(userSession[i].userOption, "userOption");
+          //console.log(userSession[i].selectedOption, "selectedOption");
+          totalAnswers++;
+          if (userSession[i].answer == userSession[i].userOption || userSession[i].selectedOption == userSession[i].answer || userSession[i].selectedOption == userSession[i].answerOption) {
+            correctAnswers++;
+            totalQuestions.push({
+              correctAnswer: userSession[i].answer,
+              answerOption: userSession[i].answerOption,
+              choice1: userSession[i].choice1,
+              choice2: userSession[i].choice2,
+              choice3: userSession[i].choice3,
+              choice4: userSession[i].choice4,
+              question: userSession[i].question,
+              questionId: i + 1,
+              questionId2: userSession[i].questionId2,
+              questionSubType: userSession[i].questionSubType,
+              questionType: userSession[i].questionType,
+              userOption: userSession[i].choice4,
+            });
+          }
+          else {
+            wrongAnswers++;
+            totalQuestions.push({
+              correctAnswer: userSession[i].answer,
+              answerOption: userSession[i].answerOption,
+              choice1: userSession[i].choice1,
+              choice2: userSession[i].choice2,
+              choice3: userSession[i].choice3,
+              choice4: userSession[i].choice4,
+              question: userSession[i].question,
+              questionId: i + 1,
+              questionId2: userSession[i].questionId2,
+              questionSubType: userSession[i].questionSubType,
+              questionType: userSession[i].questionType,
+              userOption: userSession[i].choice4,
+              selectedOption: userSession[i].choice4,
+            });
+
+          }
+        } else {
+          if (
+            y == 'Resume' &&
+            userSession[i].selectedOption == '' &&
+            (userSession[i].userOption == '' ||
+              (userSession[i].userOption == 'None' &&
+                !(
+                  userSession[this.state.count - 1].userOption ==
+                    userSession[i].choice1 ||
+                  userSession[this.state.count - 1].userOption ==
+                    userSession[i].choice2 ||
+                  userSession[this.state.count - 1].userOption ==
+                    userSession[i].choice3 ||
+                  userSession[this.state.count - 1].userOption ==
+                    userSession[i].choice4
+                )))
+          ) {
+            //console.log('AAAAAAAAFFFFFFFFFFFFAAAAAAAAAA');
+            totalAnswers++;
+            totalQuestions.push({
+                correctAnswer: userSession[i].answer,
+                answerOption: userSession[i].answerOption,
+                choice1: userSession[i].choice1,
+                choice2: userSession[i].choice2,
+                choice3: userSession[i].choice3,
+                choice4: userSession[i].choice4,
+                question: userSession[i].question,
+                questionId: i + 1,
+                questionId2: userSession[i].questionId2,
+                questionSubType: userSession[i].questionSubType,
+                questionType: userSession[i].questionType,
+                selectedOption: 'None',
+                userOption: 'None',
+              }); 
+          }
+        }
+      }
+  //    //console.log('*********outsidecorrectAnswerssaveUserSession');
+   
+      ///saveUserSession
+      
+      x = `http:/35.239.39.107:8080/geobee/resetUserSavedSession?email=${this.state.user.email}`;
+    
+      fetch(x, {
+        method: 'GET',
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          this.setState({data: json});
+          //console.log('YOOOOOOOOO!');
+          console
+            .log(this.state.data)
+            .catch((err) => console.error(err))
+            .finally(() => {
+              this.setState({fetching: false});
+            });
+        });
+    
+      
+      if (y == 'Flags' || (this.state.data.flag == true && y == 'Resume')) {
+       
+        this.props.navigation.navigate('SummaryPage', {
+          user: this.state.user,
+          correctAnswers: correctAnswers,
+          wrongAnswers: wrongAnswers,
+          totalQuestion: totalAnswers,
+          questionsArray: totalQuestions,
+          x: 'cats',
+        });
+      } else {
+        this.props.navigation.navigate('SummaryPage', {
+          user: this.state.user,
+          correctAnswers: correctAnswers,
+          wrongAnswers: wrongAnswers,
+          totalQuestion: totalAnswers,
+          questionsArray: totalQuestions,
+          x: 'dogs',
+        });
+      }
+      this.setState({data: []})
+      this.setState({data1: []})
+    }
+    else {
+    //console.log(this.state.data)
     for (let i = 0; i < this.state.data.length; i++) {
-      console.log(this.state.stateArray);
+      //console.log(this.state.stateArray);
       if (
         this.state.stateArray[i] == 'true' &&
         userSession[i].selectedOption == ''
@@ -517,7 +798,7 @@ export default class Quiz extends PureComponent {
           correctAnswer: userSession[i].answer,
         });
         totalAnswers++;
-        console.log('*********correctAnswers', correctAnswers);
+        //console.log('*********correctAnswers', correctAnswers);
       } else if (userSession[i].selectedOption != '') {
         if (userSession[i].selectedOption == 'itemOne') {
           userChoice = userSession[i].choice1;
@@ -559,15 +840,16 @@ export default class Quiz extends PureComponent {
       }
       this.setState({counter: 1});
     }
-    console.log('*********correctAnswers', totalQuestions);
+    //console.log('*********correctAnswers', totalQuestions);
+  }
   };
   selectionOfChoise = (selectedOption, currentQuestion, userSession) => {
-    console.log('*********', selectedOption);
+    //console.log('*********', selectedOption);
     if (
       currentQuestion &&
       currentQuestion['selectedOption'] !== selectedOption
     ) {
-      console.log('*********');
+      //console.log('*********');
       this.setState({notSelected: 'a'});
       const alteredSession = userSession.map((question) => {
         if (question.index === currentQuestion.index) {
@@ -580,10 +862,10 @@ export default class Quiz extends PureComponent {
         currentSelection: selectedOption,
       });
     }
-    console.log('*--********usersession', userSession);
+    //console.log('*--********usersession', userSession);
   };
   SaveGame = (userSession) => {
-    console.log('*********submitpage called');
+    //console.log('*********submitpage called');
 
     let correctAnswers = 0;
     let wrongAnswers = 0;
@@ -593,16 +875,16 @@ export default class Quiz extends PureComponent {
     for (let i = 0; i < this.state.data.length; i++) {
       userChoice = '';
       const y = this.props.navigation.getParam('y', 'value');
-      console.log(this.state.data.length);
-      console.log(this.state.stateArray);
-      console.log(userSession[this.state.count - 1].userOption);
-      console.log(userSession[i].userOption);
+      //console.log(this.state.data.length);
+      //console.log(this.state.stateArray);
+      //console.log(userSession[this.state.count - 1].userOption);
+      //console.log(userSession[i].userOption);
       if (
         y == 'Resume' &&
         (userSession[i].userOption == userSession[i].choice1 ||
           userSession[i].selectedOption == 'itemOne')
       ) {
-        console.log('AAAAAAAAAAAAAAAAAAAAAA');
+        //console.log('AAAAAAAAAAAAAAAAAAAAAA');
         totalAnswers++;
         totalQuestions.push({
           answer: userSession[i].answer,
@@ -623,7 +905,7 @@ export default class Quiz extends PureComponent {
         (userSession[i].userOption == userSession[i].choice2 ||
           userSession[i].selectedOption == 'itemTwo')
       ) {
-        console.log('ABBBBBBBAAAAAAAAAAAAAAAAAAA');
+        //console.log('ABBBBBBBAAAAAAAAAAAAAAAAAAA');
         totalAnswers++;
         totalQuestions.push({
           answer: userSession[i].answer,
@@ -644,7 +926,7 @@ export default class Quiz extends PureComponent {
         (userSession[i].userOption == userSession[i].choice3 ||
           userSession[i].selectedOption == 'itemThree')
       ) {
-        console.log('ACCCCCCCCAAAAAAAAAAAA');
+        //console.log('ACCCCCCCCAAAAAAAAAAAA');
         totalAnswers++;
         totalQuestions.push({
           answer: userSession[i].answer,
@@ -665,7 +947,7 @@ export default class Quiz extends PureComponent {
         (userSession[i].userOption == userSession[i].choice4 ||
           userSession[i].selectedOption == 'itemFour')
       ) {
-        console.log('AADDDDDDDDDAAAAAAAAAAAAA');
+        //console.log('AADDDDDDDDDAAAAAAAAAAAAA');
         totalAnswers++;
         totalQuestions.push({
           answer: userSession[i].answer,
@@ -698,7 +980,7 @@ export default class Quiz extends PureComponent {
                   userSession[i].choice4
               )))
         ) {
-          console.log('AAAAAAAAFFFFFFFFFFFFAAAAAAAAAA');
+          //console.log('AAAAAAAAFFFFFFFFFFFFAAAAAAAAAA');
           totalAnswers++;
           totalQuestions.push({
             answer: userSession[i].answer,
@@ -721,7 +1003,7 @@ export default class Quiz extends PureComponent {
         (userSession[i].answerOption == userSession[i].userOption &&
           y != 'Resume')
       ) {
-        console.log('AAAAAAGGGGGGGGGGAAAAAAAAA');
+        //console.log('AAAAAAGGGGGGGGGGAAAAAAAAA');
         correctAnswers++;
         totalQuestions.push({
           answer: userSession[i].answer,
@@ -738,37 +1020,37 @@ export default class Quiz extends PureComponent {
           userOption: userSession[i].answer,
         });
         totalAnswers++;
-        console.log('*********correctAnswers', correctAnswers);
+        //console.log('*********correctAnswers', correctAnswers);
         console.log(
           'TTTTTRRRRRRRRUUUUUUUUEEEEEEOOOOOOOOOORORRRRRRRRFFFFFAAAAAAALLLLLSSSSSEEEEEE',
           userSession[i].selectedOption != '' && y != 'Resume',
         );
       } else if (userSession[i].selectedOption != '' && y != 'Resume') {
-        console.log('HHHHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEYYYYYYYYYYy');
+        //console.log('HHHHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEYYYYYYYYYYy');
         if (
           userSession[i].selectedOption == 'itemOne' ||
           userSession[i].userOption == userSession[i].choice1
         ) {
           userChoice = userSession[i].choice1;
-          console.log('CHOOOIIIIIIICCCCCCCCEEEEEEE 1', userChoice);
+          //console.log('CHOOOIIIIIIICCCCCCCCEEEEEEE 1', userChoice);
         } else if (
           userSession[i].selectedOption == 'itemTwo' ||
           userSession[i].userOption == userSession[i].choice2
         ) {
           userChoice = userSession[i].choice2;
-          console.log('CHOOOIIIIIIICCCCCCCCEEEEEEE 2', userChoice);
+          //console.log('CHOOOIIIIIIICCCCCCCCEEEEEEE 2', userChoice);
         } else if (
           userSession[i].selectedOption == 'itemThree' ||
           userSession[i].userOption == userSession[i].choice3
         ) {
           userChoice = userSession[i].choice3;
-          console.log('CHOOOIIIIIIICCCCCCCCEEEEEEE 3', userChoice);
+          //console.log('CHOOOIIIIIIICCCCCCCCEEEEEEE 3', userChoice);
         } else if (
           userSession[i].selectedOption == 'itemFour' ||
           userSession[i].userOption == userSession[i].choice4
         ) {
           userChoice = userSession[i].choice4;
-          console.log('CHOOOIIIIIIICCCCCCCCEEEEEEE 4', userChoice);
+          //console.log('CHOOOIIIIIIICCCCCCCCEEEEEEE 4', userChoice);
         }
 
         totalQuestions.push({
@@ -789,7 +1071,7 @@ export default class Quiz extends PureComponent {
         totalAnswers++;
       } else {
         if (y != 'Resume' && userSession[i].selectedOption == '') {
-          console.log('HIIIIDSJFOSJDFODSJFOSJFDODSIFJOSDFIJOJFSDOFJ');
+          //console.log('HIIIIDSJFOSJDFODSJFOSJFDODSIFJOSDFIJOJFSDOFJ');
 
           totalQuestions.push({
             answer: userSession[i].answer,
@@ -810,11 +1092,19 @@ export default class Quiz extends PureComponent {
         }
       }
     }
-    console.log('*********outsidecorrectAnswerssaveUserSession');
-    console.log(this.state.count);
-    ///saveUserSession
-    console.log('*********correctAnswerssaveUserSession');
-    fetch('http://localhost:8080/geobee/saveUserSession', {
+    //console.log('*********outsidecorrectAnswerssaveUserSession');
+    //console.log(this.state.count);
+    //console.log('*********count', this.state.count);
+    //console.log('*********user', this.state.user);
+    //console.log('*********totalQuestions', totalQuestions);
+    //console.log('*********data', this.state.data);
+    const y = this.props.navigation.getParam('y', 'value');
+    ///saveUserSessio
+    this.setState({totalQuestions: totalQuestions});
+    //console.log('*********correctAnswerssaveUserSession');
+    if (this.state.data.flag == true && y == 'Resume') {
+      console.log("Flag Resume True");
+      fetch('http://35.239.39.107:8080/geobee/saveUserSession', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -825,21 +1115,59 @@ export default class Quiz extends PureComponent {
         data: this.state.data,
         questionsArray: totalQuestions,
         count: this.state.count,
+        flag: true,
       }),
     });
 
-    console.log('*********count', this.state.count);
-    console.log('*********user', this.state.user);
-    console.log('*********totalQuestions', totalQuestions);
-    console.log('*********data', this.state.data);
+    }
+    else if (y == 'Flags'){
+      console.log("Flag True");
+      fetch('http://35.239.39.107:8080/geobee/saveUserSession', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user: this.state.user,
+        data: this.state.data,
+        questionsArray: totalQuestions,
+        count: this.state.count,
+        flag: true,
+      }),
+    });
+
+    }
+    else {
+      console.log("Else")
+      fetch('http://35.239.39.107:8080/geobee/saveUserSession', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user: this.state.user,
+        data: this.state.data,
+        questionsArray: totalQuestions,
+        count: this.state.count,
+        flag: false,
+      }),
+    });
+
+    }
+    ////console.log('*********count', this.state.count);
+    ////console.log('*********user', this.state.user);
+    ////console.log('*********totalQuestions', totalQuestions);
+    ////console.log('*********data', this.state.data);
   };
   selectionOfChoise = (selectedOption, currentQuestion, userSession) => {
-    console.log('*********', selectedOption);
+    //console.log('*********', selectedOption);
     if (
       currentQuestion &&
       currentQuestion['selectedOption'] !== selectedOption
     ) {
-      console.log('*********');
+      //console.log('*********');
       this.setState({notSelected: 'a'});
       const alteredSession = userSession.map((question) => {
         if (question.index === currentQuestion.index) {
@@ -852,20 +1180,20 @@ export default class Quiz extends PureComponent {
         currentSelection: selectedOption,
       });
     }
-    console.log('*--********usersession', userSession);
+    //console.log('*--********usersession', userSession);
   };
   displayFlag(question) {
     let x = null;
     if (question == 'https://flagcdn.com/256x192/us-ar.png') {
-      console.log();
+      //console.log();
     } else if (question == 'https://flagcdn.com/256x192/us-il.png') {
-      console.log();
+      //console.log();
     } else if (question == 'https://flagcdn.com/256x192/us-ks.png') {
-      console.log();
+      //console.log();
     } else if (question == 'https://flagcdn.com/256x192/us-or.png') {
-      console.log();
+      //console.log();
     } else if (question == 'https://flagcdn.com/256x192/us-ut.png') {
-      console.log();
+      //console.log();
     } else {
       return question;
     }
@@ -902,7 +1230,7 @@ export default class Quiz extends PureComponent {
     }
   };
   onPress4 = (item, userSession) => {
-    console.log(userSession[this.state.count - 1].userOption);
+    //console.log(userSession[this.state.count - 1].userOption);
     const y = this.props.navigation.getParam('y', 'value');
     if (
       y == 'Resume' &&
@@ -1002,7 +1330,7 @@ export default class Quiz extends PureComponent {
     count,
   ) => {
     const y = this.props.navigation.getParam('y', 'value');
-    console.log(JSON.stringify(currentQuestion));
+    //console.log(JSON.stringify(currentQuestion));
     if (this.state.progress < 1) {
       return (
         <View>
@@ -1014,8 +1342,7 @@ export default class Quiz extends PureComponent {
                   height: '17.5%',
                   marginBottom: '10%',
                   marginTop: '50%',
-                  marginLeft: '1.5%',
-                  marginRight: '1%',
+                  marginLeft: '0%',
                 }}
                 source={require('./amountOfQuestions/Logo1.png')}
               />
@@ -1082,7 +1409,7 @@ export default class Quiz extends PureComponent {
                       }}>
                       Question {this.state.count}:
                     </Text>
-                    {y == 'Flags' &&
+                    {((this.state.data.flag == true && y == 'Resume') || y == 'Flags')  && 
                       item.question !=
                         ('https://flagcdn.com/h120/us-ar.png' ||
                           'https://flagcdn.com/h120/us-il.png' ||
@@ -1122,7 +1449,7 @@ export default class Quiz extends PureComponent {
                           />
                         </View>
                       )}
-                    {y == 'Flags' && (
+                    {((this.state.data.flag == true && y == 'Resume') || y == 'Flags' ) && (
                       <View
                         style={{
                           alignItems: 'center',
@@ -1437,7 +1764,7 @@ export default class Quiz extends PureComponent {
                         </Text>
                       </View>
                     )}
-                    {y != 'Flags' && (
+                    {(y != 'Flags' && !(this.state.data.flag == true && y == 'Resume'))&& (
                       <Text style={{fontSize: 25, textAlign: 'center'}}>
                         {' '}
                         {item.question}{' '}
@@ -1830,8 +2157,8 @@ export default class Quiz extends PureComponent {
         currentQuestion = userSession.find(
           (question) => question.index === count - 1,
         );
-        console.log(userSession[this.state.count - 1].userOption);
-        console.log('WHATTTTTTTTTTTTTTTTTTTTT');
+        //console.log(userSession[this.state.count - 1].userOption);
+        //console.log('WHATTTTTTTTTTTTTTTTTTTTT');
         //currentSelection = currentQuestion.selectedOption;
       }
     } else {
@@ -1856,11 +2183,10 @@ export default class Quiz extends PureComponent {
             <FastImage
               style={{
                 width: '105%',
-                height: '17.5%',
+                height: '18.5%',
                 marginBottom: '10%',
                 marginTop: '50%',
-                marginLeft: '1.5%',
-                marginRight: '1%',
+                marginLeft: '0%',
               }}
               source={require('./amountOfQuestions/Logo1.png')}
             />
@@ -1893,6 +2219,7 @@ export default class Quiz extends PureComponent {
         </ScrollView>
         <View
           style={{
+            position: 'absolute',
             left: 0,
             right: 0,
             bottom: 0,

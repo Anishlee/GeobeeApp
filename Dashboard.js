@@ -6,6 +6,7 @@ import {
   FlatList,
   Image,
   ScrollView,
+  Alert
 } from 'react-native';
 import {Button} from 'native-base';
 export default class Dashboard extends Component {
@@ -17,13 +18,25 @@ export default class Dashboard extends Component {
       data1: [],
       fetching: true,
       user: null,
+      isUser: false,
+      isResumeTrue: true,
     };
   }
+ // componentDidUpdate() {
+    //const isResumeTrue = this.props.navigation.getParam('isResumeTrue', true);
+    //this.setState({isResumeTrue: isResumeTrue});
+ // }
   componentDidMount() {
+    const isResumeTrue = this.props.navigation.getParam('isResumeTrue', true);
+    this.setState({isResumeTrue: isResumeTrue});
     const user = this.props.navigation.getParam('user', 'value');
+    const isUser = this.props.navigation.getParam('isUser', 'value');
     this.setState({user: user});
-    console.log(user);
-    const url = `http://localhost:8080/geobee/getRandomFactOfTheDay`;
+    this.setState({isUser: isUser});
+    
+    //console.log(user);
+    //console.log("IS USER THERE", isUser);
+    const url = `http://35.239.39.107:8080/geobee/getRandomFactOfTheDay`;
     fetch(url, {
       method: 'GET',
     })
@@ -39,30 +52,51 @@ export default class Dashboard extends Component {
   onPress = () => {
     const user = this.props.navigation.getParam('user', 'value');
     let email = user.email;
-    //http://localhost:8080/geobee/getUserSavedSession?email=soumyathebest1@gmail.com
-    const url = `http://localhost:8080/geobee/getUserSavedSession?email=${email}`;
-    fetch(url, {
-      method: 'GET',
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        this.setState({data1: json})
-          .catch((err) => console.error(err))
-          .finally(() => {
-            this.setState({fetching: false});
-          });
-      });
+    //console.log(email)
+    //http://35.239.39.107:8080/geobee/getUserSavedSession?email=soumyathebest1@gmail.com
+    //Alert.alert("data1 YOLO", email)
+    const url = `http://35.239.39.107:8080/geobee/getUserSavedSession?email=${email}`;
+   
+      fetch(url, {
+        method: 'GET',
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          //console.log("LOG ME, PLEASE! ",json);
+         /// Alert.alert("data1 YOLO json", json);
+          
+         
+          this.setState({data1: json})
+          console.log("LOG ME, PLEASE! ", json)
+            .catch((err) => console.error(err))
+            .finally(() => {
+              this.setState({fetching: false});
+            });
+        });
+      //Alert.alert("data1 YOLO", this.state.data1)
+      //console.log("data1 YOLO", this.state.data1.length == 0)
+      //console.log("data1 YOLO1", this.state.data1.length)
+      //console.log("data1 YOLO2", this.state.data1)
+    if (this.state.data1.length != 0) {
     this.props.navigation.navigate('Quiz', {
       data1: this.state.data1.questions,
       y: 'Resume',
       user: user,
     });
+  }
+  else {
+    //console.log("NOPE")
+  }
   };
   render() {
-    console.log(this.state.data);
+    
+    //console.log(this.state.data);
     const user = this.props.navigation.getParam('user', 'value');
-    console.log('life');
-    // console.log(this.state.user);
+    //console.log('life');
+    
+      
+
+    // //console.log(this.state.user);
     return (
       <View>
         <ScrollView>
@@ -124,7 +158,8 @@ export default class Dashboard extends Component {
                 New Game
               </Text>
             </Button>
-            <Button
+            {this.state.isUser == true && this.state.isResumeTrue == true && (
+              <Button
               large
               full
               style={styles.StyleforButton}
@@ -139,6 +174,7 @@ export default class Dashboard extends Component {
                 Resume Game
               </Text>
             </Button>
+            )}
             <Text style={{marginBottom: 350}}></Text>
           </View>
         </ScrollView>
