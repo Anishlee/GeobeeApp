@@ -338,7 +338,7 @@ export default class HomePage extends React.Component {
                   width: '105%',
                   height: '16.5%',
                   marginBottom: '10%',
-                  marginTop: '50%',
+                  //marginTop: '50%',
                   marginLeft: '0%',
                 }}
                 source={require('./amountOfQuestions/Logo1.png')}
@@ -347,8 +347,8 @@ export default class HomePage extends React.Component {
             {this.state.loggedIn == false && (
               <View style={{alignItems: 'center'}}>
                 <GoogleSigninButton
-                  style={{width: 192, height: 48}}
-                  size={GoogleSigninButton.Size.Wide}
+                  style={{width: '20%', height: 48}}
+                  //size={GoogleSigninButton.Size.Wide}
                   color={GoogleSigninButton.Color.Light}
                   onPress={() => this.signIn()}
                 />
