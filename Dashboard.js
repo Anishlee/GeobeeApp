@@ -22,10 +22,7 @@ export default class Dashboard extends Component {
       isResumeTrue: true,
     };
   }
- // componentDidUpdate() {
-    //const isResumeTrue = this.props.navigation.getParam('isResumeTrue', true);
-    //this.setState({isResumeTrue: isResumeTrue});
- // }
+
   componentDidMount() {
     const isResumeTrue = this.props.navigation.getParam('isResumeTrue', true);
     this.setState({isResumeTrue: isResumeTrue});
@@ -78,6 +75,7 @@ export default class Dashboard extends Component {
       //console.log("data1 YOLO1", this.state.data1.length)
       //console.log("data1 YOLO2", this.state.data1)
     if (this.state.data1.length != 0) {
+    console.log(this.state.data1.flag)
     this.props.navigation.navigate('Quiz', {
       data1: this.state.data1.questions,
       y: 'Resume',
@@ -140,13 +138,13 @@ export default class Dashboard extends Component {
                 </View>
               )}
             />
-
-            <Button
+            {this.state.user == 'value' && (
+              <Button
               large
               full
               style={styles.StyleforButton2}
               onPress={() =>
-                this.props.navigation.navigate('ChooseYourQuiz', {user: user})
+                this.props.navigation.navigate('ChooseYourQuiz', {user: user, isUserTrue: false})
               }>
               <Text
                 style={{
@@ -158,6 +156,26 @@ export default class Dashboard extends Component {
                 New Game
               </Text>
             </Button>
+            )}
+            {this.state.user != 'value' && (
+               <Button
+               large
+               full
+               style={styles.StyleforButton2}
+               onPress={() =>
+                 this.props.navigation.navigate('ChooseYourQuiz', {user: user, isUserTrue: true})
+               }>
+               <Text
+                 style={{
+                   fontSize: 20,
+                   fontWeight: '500',
+                   color: 'black',
+                   textAlign: 'center',
+                 }}>
+                 New Game
+               </Text>
+             </Button>
+            )}
             {this.state.isUser == true && this.state.isResumeTrue == true && (
               <Button
               large

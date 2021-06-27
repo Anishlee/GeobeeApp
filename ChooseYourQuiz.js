@@ -14,7 +14,7 @@ export default class ChooseYourQuiz extends Component {
     };
   }
   render() {
-    const user = this.props.navigation.getParam('user', {});
+    const user = this.props.navigation.getParam('user', 'value');
     return (
       <View>
         <ScrollView>

@@ -322,33 +322,33 @@ export default class HomePage extends React.Component {
           <View style={{backgroundColor: '#ffffff'}}>
             {this.state.loggedIn == false && (
               <FastImage
-                style={{
-                  width: '105%',
-                  height: '18.5%',
-                  marginBottom: '10%',
-                  marginTop: '50%',
-                  marginLeft: '0%',
-                }}
-                source={require('./amountOfQuestions/Logo1.png')}
-              />
+              style={{
+                width: '105%',
+                height: '17.5%',
+                marginBottom: '10%',
+                marginTop: '50%',
+                marginLeft: '0%',
+              }}
+              source={require('./amountOfQuestions/Logo1.png')}
+            />
             )}
             {this.state.loggedIn == true && (
               <FastImage
-                style={{
-                  width: '105%',
-                  height: '16.5%',
-                  marginBottom: '10%',
-                  //marginTop: '50%',
-                  marginLeft: '0%',
-                }}
-                source={require('./amountOfQuestions/Logo1.png')}
-              />
+              style={{
+                width: '105%',
+                height: '16.5%',
+                marginBottom: '10%',
+                marginTop: '50%',
+                marginLeft: '0%',
+              }}
+              source={require('./amountOfQuestions/Logo1.png')}
+            />
             )}
             {this.state.loggedIn == false && (
               <View style={{alignItems: 'center'}}>
                 <GoogleSigninButton
-                  style={{width: '20%', height: 48}}
-                  //size={GoogleSigninButton.Size.Wide}
+                  style={{width: 192, height: 48}}
+                  size={GoogleSigninButton.Size.Wide}
                   color={GoogleSigninButton.Color.Light}
                   onPress={() => this.signIn()}
                 />

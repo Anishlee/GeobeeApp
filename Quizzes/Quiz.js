@@ -1,3 +1,4 @@
+//startstop
 //http://35.239.39.107:8080/geobee/getCapitalQuestions?size=${Amount}
 import React, {PureComponent} from 'react';
 import {Dimensions} from 'react-native';
@@ -129,7 +130,7 @@ export default class Quiz extends PureComponent {
 
     this.animate();
 
-    const user = this.props.navigation.getParam('user', {});
+    const user = this.props.navigation.getParam('user', 'value');
     const Amount = this.props.navigation.getParam('amount', 'value');
     this.setState({user: user});
     this.setState({sent: sent});
@@ -201,7 +202,7 @@ export default class Quiz extends PureComponent {
       })
         .then((response) => response.json())
         .then((json) => {
-          //console.log('HELLO');
+          console.log("LOG ME, PLEASE! ", json.flag)
           this.setState({data: json.questionsArray});
           this.setState({data1: json});
           this.setState({count: json.count})
@@ -751,7 +752,7 @@ export default class Quiz extends PureComponent {
         });
     
       
-      if (y == 'Flags' || (this.state.data.flag == true && y == 'Resume')) {
+      if (y == 'Flags' || (this.state.data1.flag == true && y == 'Resume')) {
        
         this.props.navigation.navigate('SummaryPage', {
           user: this.state.user,
@@ -1102,7 +1103,7 @@ export default class Quiz extends PureComponent {
     ///saveUserSessio
     this.setState({totalQuestions: totalQuestions});
     //console.log('*********correctAnswerssaveUserSession');
-    if (this.state.data.flag == true && y == 'Resume') {
+    if (this.state.data1.flag == true && y == 'Resume') {
       console.log("Flag Resume True");
       fetch('http://35.239.39.107:8080/geobee/saveUserSession', {
       method: 'POST',
@@ -1409,7 +1410,7 @@ export default class Quiz extends PureComponent {
                       }}>
                       Question {this.state.count}:
                     </Text>
-                    {((this.state.data.flag == true && y == 'Resume') || y == 'Flags')  && 
+                    {((this.state.data1.flag == true && y == 'Resume') || y == 'Flags')  && 
                       item.question !=
                         ('https://flagcdn.com/h120/us-ar.png' ||
                           'https://flagcdn.com/h120/us-il.png' ||
@@ -1449,7 +1450,7 @@ export default class Quiz extends PureComponent {
                           />
                         </View>
                       )}
-                    {((this.state.data.flag == true && y == 'Resume') || y == 'Flags' ) && (
+                    {((this.state.data1.flag == true && y == 'Resume') || y == 'Flags' ) && (
                       <View
                         style={{
                           alignItems: 'center',
@@ -1764,7 +1765,7 @@ export default class Quiz extends PureComponent {
                         </Text>
                       </View>
                     )}
-                    {(y != 'Flags' && !(this.state.data.flag == true && y == 'Resume'))&& (
+                    {(y != 'Flags' && !(this.state.data1.flag == true && y == 'Resume'))&& (
                       <Text style={{fontSize: 25, textAlign: 'center'}}>
                         {' '}
                         {item.question}{' '}
@@ -2084,7 +2085,7 @@ export default class Quiz extends PureComponent {
                         </Button>
                       )}
                     </View>
-                    {this.state.user != null && (
+                    {this.state.user != 'value' && (
                       <View style={{alignItems: 'center'}}>
                         <Button
                           style={{
@@ -2134,7 +2135,6 @@ export default class Quiz extends PureComponent {
     const {fetching, data, count} = this.state;
     let {userSession, currentSelection} = this.state;
     let currentQuestion;
-
     if (
       // this.state.sent == false &&
       data &&
@@ -2309,3 +2309,4 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
 });
+//startstop
