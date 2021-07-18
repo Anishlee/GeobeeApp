@@ -8,13 +8,13 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "build:ios" : "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
   },
   "dependencies": {
-    "@invertase/react-native-apple-authentication": "^2.1.0",
+    "@invertase/react-native-apple-authentication": "^2.1.2",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-firebase/app": "^10.4.0",
-    "@react-native-firebase/auth": "^10.4.0",
+    "@react-native-firebase/auth": "^12.1.0",
     "@react-navigation/stack": "^5.12.8",
     "native-base": "^2.13.14",
     "react": "16.13.1",

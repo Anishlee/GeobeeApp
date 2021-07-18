@@ -134,11 +134,13 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from 'react-native-google-signin';
-import {
+import appleAuth, {
   AppleButton,
-  appleAuth,
-} from '@invertase/react-native-apple-authentication';
-import auth from '@react-native-firebase/auth';
+  AppleAuthError,
+  AppleAuthRequestScope,
+  AppleAuthRequestOperation,
+} from '@invertase/react-native-apple-authentication'
+import auth, { firebase } from '@react-native-firebase/auth';
 
 export default class HomePage extends React.Component {
   static navigationOptions = {
@@ -171,6 +173,9 @@ export default class HomePage extends React.Component {
     });
     //const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     //return subscriber; // unsubscribe on unmount
+    return appleAuth.onCredentialRevoked(async () => {
+      console.warn('If this function executes, User Credentials have been Revoked');
+    });
   }
 
   componentDidUpdate() {
@@ -180,6 +185,10 @@ export default class HomePage extends React.Component {
         '647666075800-46h7rjimhm9du40cvhug8jus5u6fjguv.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
 
       offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+      
+    });
+    return appleAuth.onCredentialRevoked(async () => {
+      console.warn('If this function executes, User Credentials have been Revoked');
     });
   }
   signIn = async () => {
@@ -308,6 +317,34 @@ export default class HomePage extends React.Component {
       console.error(error);
     }
   };
+  onAppleButtonPress = async () => {
+   // 1). start a apple sign-in request
+  const appleAuthRequestResponse = await appleAuth.performRequest({
+    requestedOperation: appleAuth.Operation.LOGIN,
+    requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+  });
+
+  // 2). if the request was successful, extract the token and nonce
+  const { identityToken, nonce } = appleAuthRequestResponse;
+
+  // can be null in some scenarios
+  if (identityToken) {
+    // 3). create a Firebase `AppleAuthProvider` credential
+    const appleCredential = firebase.auth.AppleAuthProvider.credential(identityToken, nonce);
+
+    // 4). use the created `AppleAuthProvider` credential to start a Firebase auth request,
+    //     in this example `signInWithCredential` is used, but you could also call `linkWithCredential`
+    //     to link the account to an existing user
+    const userCredential = await firebase.auth().signInWithCredential(appleCredential);
+
+    // user is now signed in, any Firebase `onAuthStateChanged` listeners you have will trigger
+    console.log(`Firebase authenticated via Apple, UID: `);
+    console.log(userCredential)
+  } else {
+    // handle this - retry?
+  }
+
+  }
   signInWithLogging = () => {
     let user = this.state.userInfo;
     this.props.navigation.navigate('Dashboard', {
@@ -352,6 +389,15 @@ export default class HomePage extends React.Component {
                   color={GoogleSigninButton.Color.Light}
                   onPress={() => this.signIn()}
                 />
+                 {appleAuth.isSupported && (
+        <AppleButton
+          cornerRadius={5}
+          style={{ width: 200, height: 60 }}
+          buttonStyle={AppleButton.Style.WHITE}
+          buttonType={AppleButton.Type.SIGN_IN}
+          onPress={() => this.onAppleButtonPress()}
+        />
+      )}
               </View>
             )}
 
