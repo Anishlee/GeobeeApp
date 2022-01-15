@@ -15,6 +15,8 @@ export default class ChooseYourQuiz extends Component {
   }
   render() {
     const user = this.props.navigation.getParam('user', 'value');
+    const isAppleTrue = this.props.navigation.getParam('isAppleTrue', 'value');
+    console.log(isAppleTrue, "CHOOSE QUIZ")
     return (
       <View>
         <ScrollView>
@@ -33,7 +35,8 @@ export default class ChooseYourQuiz extends Component {
                 marginBottom: '5%',
               }}
             />
-            <Button
+            {isAppleTrue == 'value' && (
+              <Button
               large
               full
               style={styles.StyleforButton}
@@ -42,27 +45,31 @@ export default class ChooseYourQuiz extends Component {
                   x: 'Capitals',
                   user: user,
                 })
+                
               }>
-              <Text
+                <Text
                 style={{fontSize: 20, fontWeight: '500', textAlign: 'center'}}>
                 Capitals Quiz
               </Text>
-            </Button>
-            <Button
-              large
-              full
-              style={styles.StyleforButton}
-              onPress={() =>
-                this.props.navigation.navigate('AmountOfQuestions', {
-                  x: 'Nicknames',
-                  user: user,
-                })
-              }>
-              <Text
-                style={{fontSize: 20, fontWeight: '500', textAlign: 'center'}}>
-                Nicknames Quiz
-              </Text>
-            </Button>
+            </Button>)}
+            {isAppleTrue == 'value' && (
+               <Button
+               large
+               full
+               style={styles.StyleforButton}
+               onPress={() =>
+                 this.props.navigation.navigate('AmountOfQuestions', {
+                   x: 'Nicknames',
+                   user: user,
+                 })
+               }>
+               <Text
+                 style={{fontSize: 20, fontWeight: '500', textAlign: 'center'}}>
+                 Nicknames Quiz
+               </Text>
+             </Button>
+            )}
+           {isAppleTrue == 'value' && (
             <Button
               large
               full
@@ -78,6 +85,8 @@ export default class ChooseYourQuiz extends Component {
                 Flags Quiz
               </Text>
             </Button>
+           )}
+           {isAppleTrue == 'value' && (
             <Button
               large
               full
@@ -93,6 +102,8 @@ export default class ChooseYourQuiz extends Component {
                 General/Miscellaneous Quiz
               </Text>
             </Button>
+           )}
+           {isAppleTrue == 'value' && (
             <Button
               large
               full
@@ -108,6 +119,97 @@ export default class ChooseYourQuiz extends Component {
                 U.S Geobee Questions
               </Text>
             </Button>
+           )}
+           {isAppleTrue != 'value' && (
+              <Button
+              large
+              full
+              style={styles.StyleforButton}
+              onPress={() =>
+                this.props.navigation.navigate('AmountOfQuestions', {
+                  x: 'Capitals',
+                  user: user,
+                  isAppleTrue: true,
+                })
+                
+              }>
+                <Text
+                style={{fontSize: 20, fontWeight: '500', textAlign: 'center'}}>
+                Capitals Quiz
+              </Text>
+            </Button>)}
+            {isAppleTrue != 'value' && (
+               <Button
+               large
+               full
+               style={styles.StyleforButton}
+               onPress={() =>
+                 this.props.navigation.navigate('AmountOfQuestions', {
+                   x: 'Nicknames',
+                   user: user,
+                   isAppleTrue: true,
+                 })
+               }>
+               <Text
+                 style={{fontSize: 20, fontWeight: '500', textAlign: 'center'}}>
+                 Nicknames Quiz
+               </Text>
+             </Button>
+            )}
+           {isAppleTrue != 'value' && (
+            <Button
+              large
+              full
+              style={styles.StyleforButton}
+              onPress={() =>
+                this.props.navigation.navigate('AmountOfQuestions', {
+                  x: 'Flags',
+                  user: user,
+                  isAppleTrue: true,
+                })
+              }>
+              <Text
+                style={{fontSize: 20, fontWeight: '500', textAlign: 'center'}}>
+                Flags Quiz
+              </Text>
+            </Button>
+           )}
+           {isAppleTrue != 'value' && (
+            <Button
+              large
+              full
+              style={styles.StyleforButton}
+              onPress={() =>
+                this.props.navigation.navigate('AmountOfQuestions', {
+                  x: 'General',
+                  user: user,
+                  isAppleTrue: true,
+                })
+              }>
+              <Text
+                style={{fontSize: 20, fontWeight: '500', textAlign: 'center'}}>
+                General/Miscellaneous Quiz
+              </Text>
+            </Button>
+           )}
+           {isAppleTrue != 'value' && (
+            <Button
+              large
+              full
+              style={styles.StyleforButton}
+              onPress={() =>
+                this.props.navigation.navigate('AmountOfQuestions', {
+                  x: 'States',
+                  user: user,
+                  isAppleTrue: true,
+                })
+              }>
+              <Text
+                style={{fontSize: 20, fontWeight: '500', textAlign: 'center'}}>
+                U.S Geobee Questions
+              </Text>
+            </Button>
+           )}
             <Text style={{marginBottom: 250}}></Text>
           </View>
         </ScrollView>

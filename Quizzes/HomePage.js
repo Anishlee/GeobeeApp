@@ -1,128 +1,3 @@
-/*class AppleSignInTest extends Component {
-  constructor() {
-    super();
-
-    this.authCredentialListener = null;
-    this.user = null;
-    this.state = {
-      credentialStateForUser: -1,
-    };
-  }
-
-  componentDidMount() {
-    this.authCredentialListener = appleAuth.onCredentialRevoked(async () => {
-      //console.log('Credential Revoked for the users');
-
-      this.fetchAndUpdateCredentialState().catch((error) => {
-        return this.setState({
-          credentialStateForUser: `Error on the credential Update with code ${error.code}`,
-        });
-      });
-    });
-
-    this.fetchAndUpdateCredentialState()
-      .then((response) => {
-        return this.setState({credentialStateForUser: response});
-      })
-      .catch((error) => {
-        return this.setState({
-          credentialStateForUser: `Error have occurred with code ${error.code}`,
-        });
-      });
-  }
-
-  componentWillUnmount() {
-    this.authCredentialListener();
-  }
-
-  signIn = async () => {
-    //console.log('Begining Apple ');
-
-    try {
-      debugger;
-      const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: appleAuth.Operation.LOGIN,
-        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-      });
-      this.props.navigation.navigate('QuizDashboard');
-
-      //console.log('Apple Auth Request Response ', appleAuthRequestResponse);
-
-      const {
-        user: newUser,
-        email,
-        identityToken,
-        realUserStatus,
-      } = appleAuthRequestResponse;
-
-      this.user = newUser;
-
-      this.fetchAndUpdateCredentialState()
-        .then((response) => {
-          return this.setState({credentialStateForUser: response});
-        })
-        .catch((error) => {
-          return this.setState({
-            credentialStateForUser: `Error have occurred with code ${error.code}`,
-          });
-        });
-
-      if (identityToken) {
-        //console.log('Apple Sign In Identity Token is ', identityToken);
-        this.props.navigation.navigate('QuizDashboard');
-      } else {
-        //console.log('Sign In via Apple is failed');
-      }
-
-      if (realUserStatus === appleAuth.UserStatus.LIKELY_REAL) {
-        //console.log('The user is an authentic real user profile');
-        this.props.navigation.navigate('QuizDashboard');
-      }
-
-      //console.log(
-        `Apple authentication is completed for ${this.user} with email id ${email}`,
-      );
-    } catch (error) {
-      if (error.code === appleAuth.Error.CANCELED) {
-        console.error(JSON.stringify(error));
-        //console.log('User Sign In for Apple is canceled');
-      } else {
-        console.error(JSON.stringify(error));
-      }
-    }
-  };
-
-  fetchAndUpdateCredentialState = async () => {
-    if (this.user === null) {
-      this.setState({credentialStateForUser: 'N/A'});
-    } else {
-      const credentialState = await appleAuth.getCredentialStateForUser(
-        this.user,
-      );
-
-      if (credentialState === appleAuth.State.AUTHORIZED) {
-        this.setState({credentialStateForUser: 'AUTHORIZED'});
-      } else {
-        this.setState({credentialStateForUser: credentialState});
-      }
-    }
-  };
-
-  render() {
-    return (
-      <View style={[styles.container, styles.horizontal]}>
-        <AppleButton
-          style={styles.appleButton}
-          cornerRadius={5}
-          buttonStyle={AppleButton.Style.WHITE}
-          buttonType={AppleButton.Type.SIGN_IN}
-          onPress={() => this.signIn()}
-        />
-      </View>
-    );
-  }
-}
-//<AppleSignInTest />*/
 
 import React, {useEffect} from 'react';
 import {View, StyleSheet, Text, Image, ScrollView, Alert} from 'react-native';
@@ -148,11 +23,16 @@ export default class HomePage extends React.Component {
   };
   constructor() {
     super();
+
+    this.authCredentialListener = null;
+    this.user = null;
     this.state = {
       loggedIn: false,
       setloggedIn: false,
       userInfo: null,
       setUserInfo: [],
+      data: null,
+      credentialStateForUser: -1
     };
   }
   /*onAuthStateChanged(user) {
@@ -176,6 +56,14 @@ export default class HomePage extends React.Component {
     return appleAuth.onCredentialRevoked(async () => {
       console.warn('If this function executes, User Credentials have been Revoked');
     });
+
+    this.authCredentialListener = appleAuth.onCredentialRevoked(async () => {
+      console.warn('Credential Revoked');
+
+      this.fetchAndUpdateCredentialState().catch(error => 
+        this.setState({credentialStateForUser: `Error: ${error.code}`}),
+        );
+    });
   }
 
   componentDidUpdate() {
@@ -191,6 +79,11 @@ export default class HomePage extends React.Component {
       console.warn('If this function executes, User Credentials have been Revoked');
     });
   }
+
+  componentWillUnmount() {
+    this.authCredentialListener();
+  }
+
   signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -318,18 +211,138 @@ export default class HomePage extends React.Component {
     }
   };
   onAppleButtonPress = async () => {
+    try {
    // 1). start a apple sign-in request
   const appleAuthRequestResponse = await appleAuth.performRequest({
     requestedOperation: appleAuth.Operation.LOGIN,
     requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
   });
 
+//const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
+
   // 2). if the request was successful, extract the token and nonce
-  const { identityToken, nonce } = appleAuthRequestResponse;
+  const { user: newUser, email, realUserStatus, identityToken, nonce } = appleAuthRequestResponse;
+console.log("Hi.")
+let first_name = ""
+let last_name = ""
+let x = ""
+if (appleAuthRequestResponse.email != null) {
+  if (appleAuthRequestResponse.fullName.givenName != null && appleAuthRequestResponse.fullName.familyName != null) {
+    first_name = appleAuthRequestResponse.fullName.givenName.toLowerCase();
+    first_name = first_name.charAt(0).toUpperCase() + first_name.slice(1)
+    last_name = appleAuthRequestResponse.fullName.familyName.toLowerCase();
+    last_name = last_name.charAt(0).toUpperCase() + last_name.slice(1)
+    console.log(first_name, last_name, appleAuthRequestResponse.email, appleAuthRequestResponse.user);
+    console.log("PLEASE WORK!")
+    const url = `http://35.208.160.247:8080/geobee/saveUIDSessionInfo?userId=${appleAuthRequestResponse.user}&email=${appleAuthRequestResponse.email}&fname=${first_name}&lastName=${last_name}`
+    fetch(url, {
+      method: 'GET',
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        console.log("BROROROSDOFSKFSF")
+        this.setState({data: json})
+          .catch((err) => console.error(err))
+          .finally(() => {
+            this.setState({fetching: false});
+          });
+      });
+    
+  }
+  else if(appleAuthRequestResponse.fullName.givenName != null) {
+    first_name = appleAuthRequestResponse.fullName.givenName.toLowerCase();
+    first_name = first_name.charAt(0).toUpperCase() + first_name.slice(1)
+    console.log(first_name, appleAuthRequestResponse.email, appleAuthRequestResponse.user);
+    const url = `http://35.208.160.247:8080/geobee/saveUIDSessionInfo?userId=${appleAuthRequestResponse.user}&email=${appleAuthRequestResponse.email}&fname=${first_name}&lastName=${last_name}`
+    fetch(url, {
+      method: 'GET',
+    })
+        .then((response) => response.json())
+        .then((json) => {
+          this.setState({data: json})
+            .catch((err) => console.error(err))
+            .finally(() => {
+              this.setState({fetching: false});
+            });
+        });
+      }
+  else if (appleAuthRequestResponse.fullName.familyName != null){
+    last_name = appleAuthRequestResponse.fullName.familyName.toLowerCase();
+    last_name = last_name.charAt(0).toUpperCase() + last_name.slice(1)
+    console.log(last_name, appleAuthRequestResponse.email, appleAuthRequestResponse.user);
+    const url = `http://35.208.160.247:8080/geobee/saveUIDSessionInfo?userId=${appleAuthRequestResponse.user}&email=${appleAuthRequestResponse.email}&fname=${first_name}&lastName=${last_name}`
+    fetch(url, {
+      method: 'GET',
+    })
+        .then((response) => response.json())
+        .then((json) => {
+          this.setState({data: json})
+            .catch((err) => console.error(err))
+            .finally(() => {
+              this.setState({fetching: false});
+            });
+        });
+      }
+  else {
+     first_name = "Private"
+     last_name = "Person"
+    console.log(first_name, last_name, appleAuthRequestResponse.email, appleAuthRequestResponse.user);
+    const url = `http://35.208.160.247:8080/geobee/saveUIDSessionInfo?userId=${appleAuthRequestResponse.user}&email=${appleAuthRequestResponse.email}&fname=${first_name}&lastName=${last_name}`
+    fetch(url, {
+      method: 'GET',
+    })
+        .then((response) => response.json())
+        .then((json) => {
+          this.setState({data: json})
+            .catch((err) => console.error(err))
+            .finally(() => {
+              this.setState({fetching: false});
+            });
+        });
+      }
+}
+else {
+  
+  const url = `http://35.208.160.247:8080/geobee/getUIDSessionInfo?userId=${appleAuthRequestResponse.user}`;
+    fetch(url, {
+      method: 'GET',
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({data: json})
+
+          .catch((err) => console.error(err))
+          .finally(() => {
+            this.setState({fetching: false});
+          });
+      });
+     
+}
+console.log(this.state.data)
+console.log("appleAuthRequestResponse",appleAuthRequestResponse);
+console.log("EMAIL",JSON.stringify(appleAuth.Scope.EMAIL));
+console.log("FULL_NAME", JSON.stringify(appleAuth.Scope.FULL_NAME));
+console.log("Scope", JSON.stringify(appleAuth.identityToken));
+
+  this.user = newUser;
+  this.setState({userInfo: newUser});
+  console.log("ULTIMATE ULTIMATE YES")
+  console.log(this.state.data)
+  this.setState({loggedIn: true});
+  console.log(this.state.loggedIn)
+  if (this.state.data != null){
+    console.log("DATA IS NOT EQUAL TO NULL")
+  this.props.navigation.navigate('Dashboard', {user: this.state.data, apple: true, isUser: true,});
+  }
+  console.log("ultimate yes")
+  this.fetchAndUpdateCredentialState()
+  .then(response => this.setState({credentialStateForUser: response}))
+  .catch(error => this.setState({credentialStateForUser: `Error: ${error.code}`}),);
 
   // can be null in some scenarios
   if (identityToken) {
     // 3). create a Firebase `AppleAuthProvider` credential
+    console.log(identityToken, nonce);
     const appleCredential = firebase.auth.AppleAuthProvider.credential(identityToken, nonce);
 
     // 4). use the created `AppleAuthProvider` credential to start a Firebase auth request,
@@ -338,13 +351,34 @@ export default class HomePage extends React.Component {
     const userCredential = await firebase.auth().signInWithCredential(appleCredential);
 
     // user is now signed in, any Firebase `onAuthStateChanged` listeners you have will trigger
+    console.log(`Firebase authenticated via Apple, UID: ${userCredential.user.uid}`);
     console.log(`Firebase authenticated via Apple, UID: `);
     console.log(userCredential)
   } else {
     // handle this - retry?
   }
+} catch (error) {
+if (error.code === appleAuth.Error.CANCELED) {
+console.warn('User canceled Apple Sign In');
+} else {
+  console.error(error);
+}
+}
+  };
+  
+fetchAndUpdateCredentialState = async() => {
+if (this.user === null) {
+ this.setState({credentialStateForUser: 'N/A'});
+} else {
+const credentialState = await appleAuth.getCredentialStateForUser(this.user);
+if (credentialState === appleAuth.State.AUTHORIZED) {
+this.setState({credentialStateForUser: 'AUTHORIZED'});
+} else {
+this.setState({credentialStateForUser: credentialState});
+}
+}
+};
 
-  }
   signInWithLogging = () => {
     let user = this.state.userInfo;
     this.props.navigation.navigate('Dashboard', {
@@ -357,6 +391,7 @@ export default class HomePage extends React.Component {
       <View>
         <ScrollView>
           <View style={{backgroundColor: '#ffffff'}}>
+            
             {this.state.loggedIn == false && (
               <FastImage
               style={{
@@ -392,8 +427,8 @@ export default class HomePage extends React.Component {
                  {appleAuth.isSupported && (
         <AppleButton
           cornerRadius={5}
-          style={{ width: 200, height: 60 }}
-          buttonStyle={AppleButton.Style.WHITE}
+          style={{ width: 192, height: 48 }}
+          buttonStyle={AppleButton.Style.BLACK}
           buttonType={AppleButton.Type.SIGN_IN}
           onPress={() => this.onAppleButtonPress()}
         />

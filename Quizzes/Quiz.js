@@ -1,5 +1,5 @@
 //startstop
-//http://35.239.39.107:8080/geobee/getCapitalQuestions?size=${Amount}
+//http://35.208.160.247:8080/geobee/getCapitalQuestions?size=${Amount}
 import React, {PureComponent} from 'react';
 import {Dimensions} from 'react-native';
 /*
@@ -126,12 +126,22 @@ export default class Quiz extends PureComponent {
   componentDidMount() {
     const sent = this.props.navigation.getParam('sent', false);
     const data1 = this.props.navigation.getParam('data1', []);
+    
     this.Questions();
 
     this.animate();
 
     const user = this.props.navigation.getParam('user', 'value');
+    console.log(user, data1)
+    
+    const apple = this.props.navigation.getParam('isAppleTrue', false);
+    const appleTest = this.props.navigation.getParam('appleTest', 'android');
+    
+    console.log("HERREEREREREREREEEREREERERERERREERERERRERERERE")
     const Amount = this.props.navigation.getParam('amount', 'value');
+    console.log("QUIZ.JS component mount ", apple)
+    console.log("QUIZ.JS component mount ", appleTest)
+
     this.setState({user: user});
     this.setState({sent: sent});
     // this.setState({data1: data1});
@@ -153,7 +163,18 @@ export default class Quiz extends PureComponent {
   Questions = () => {
     let x = 0;
     const user = this.props.navigation.getParam('user', 'value');
-    let email = user.email;
+    const apple = this.props.navigation.getParam('isAppleTrue', false);
+    
+    console.log("QUIZ.JS ", apple)
+    let email = ""
+    let userId = ""
+    if (apple == 'value1') {
+      userId = user.userId
+    }
+    else { 
+      email = user.email;
+    }
+    
     const Amount = this.props.navigation.getParam('amount', 'value');
     const State = this.props.navigation.getParam('state', 'value');
     const y = this.props.navigation.getParam('y', 'value');
@@ -161,24 +182,31 @@ export default class Quiz extends PureComponent {
     //console.log(y);
     //console.log(State);
     if (y == 'General') {
-      x = `http://35.239.39.107:8080/geobee/getMiscQuestions?size=${Amount}`;
+      x = `http://35.208.160.247:8080/geobee/getMiscQuestions?size=${Amount}`;
     }
+
+    console.log(y, "!!!!Quiz.js y1")
     if (y == 'Resume') {
-      //console.log('In resume game');
+      console.log(apple, "Quiz.js apple")
+      if (apple == false) {
+        x = `http://35.208.160.247:8080/geobee/getUserSavedSession?email=${email}`;
+      }
+      else { 
+        x = `http://35.208.160.247:8080/geobee/getAppleUserSavedSession?userId=${userId}`;
+      }
       
-      x = `http://35.239.39.107:8080/geobee/getUserSavedSession?email=${email}`;
     }
     if (y == 'Capitals') {
-      x = `http://35.239.39.107:8080/geobee/getCapitalQuestions?size=${Amount}`;
+      x = `http://35.208.160.247:8080/geobee/getCapitalQuestions?size=${Amount}`;
     }
     if (y == 'States') {
-      x = `http://35.239.39.107:8080/geobee/getQuestionsByState?size=${Amount}`;
+      x = `http://35.208.160.247:8080/geobee/getQuestionsByState?size=${Amount}`;
     }
     if (y == 'Nicknames') {
-      x = `http:/35.239.39.107:8080/geobee/getNicknamesQuestions?size=${Amount}`;
+      x = `http:/35.208.160.247:8080/geobee/getNicknamesQuestions?size=${Amount}`;
     }
     if (y == 'Flags') {
-      x = `http:/35.239.39.107:8080/geobee/getFlagsQuestions?size=${Amount}`;
+      x = `http:/35.208.160.247:8080/geobee/getFlagsQuestions?size=${Amount}`;
     }
     if (y != 'Resume') {
       fetch(x, {
@@ -196,13 +224,17 @@ export default class Quiz extends PureComponent {
             });
         });
     }
+
+    console.log(y, "Quiz.js y2")
+    console.log(x, "Quiz.js x")
     if (y == 'Resume') {
+      console.log(x, )
       fetch(x, {
         method: 'GET',
       })
         .then((response) => response.json())
         .then((json) => {
-          console.log("LOG ME, PLEASE! ", json.flag)
+          console.log("&&&& Quiz.js json", json)
           this.setState({data: json.questionsArray});
           this.setState({data1: json});
           this.setState({count: json.count})
@@ -733,9 +765,13 @@ export default class Quiz extends PureComponent {
   //    //console.log('*********outsidecorrectAnswerssaveUserSession');
    
       ///saveUserSession
-      
-      x = `http:/35.239.39.107:8080/geobee/resetUserSavedSession?email=${this.state.user.email}`;
-    
+      const apple = this.props.navigation.getParam('apple', 'value');
+      if (apple == 'value') {
+      x = `http:/35.208.160.247:8080/geobee/resetUserSavedSession?email=${this.state.user.email}`;
+      }
+      else {
+      x = `http:/35.208.160.247:8080/geobee/resetAppleUserSavedSession?userId=${this.state.user.userId}`
+      }
       fetch(x, {
         method: 'GET',
       })
@@ -1100,12 +1136,14 @@ export default class Quiz extends PureComponent {
     //console.log('*********totalQuestions', totalQuestions);
     //console.log('*********data', this.state.data);
     const y = this.props.navigation.getParam('y', 'value');
+    const isAppleTrue = this.props.navigation.getParam('isAppleTrue', 'value');
     ///saveUserSessio
     this.setState({totalQuestions: totalQuestions});
     //console.log('*********correctAnswerssaveUserSession');
+    if (isAppleTrue != 'value') { 
     if (this.state.data1.flag == true && y == 'Resume') {
       console.log("Flag Resume True");
-      fetch('http://35.239.39.107:8080/geobee/saveUserSession', {
+      fetch('http://35.208.160.247:8080/geobee/saveAppleUserSavedSession', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -1123,7 +1161,7 @@ export default class Quiz extends PureComponent {
     }
     else if (y == 'Flags'){
       console.log("Flag True");
-      fetch('http://35.239.39.107:8080/geobee/saveUserSession', {
+      fetch('http://35.208.160.247:8080/geobee/saveAppleUserSavedSession', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -1141,7 +1179,7 @@ export default class Quiz extends PureComponent {
     }
     else {
       console.log("Else")
-      fetch('http://35.239.39.107:8080/geobee/saveUserSession', {
+      fetch('http://35.208.160.247:8080/geobee/saveAppleUserSavedSession', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -1157,6 +1195,63 @@ export default class Quiz extends PureComponent {
     });
 
     }
+  }
+  else {
+    if (this.state.data1.flag == true && y == 'Resume') {
+      console.log("Flag Resume True");
+      fetch('http://35.208.160.247:8080/geobee/saveUserSession', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user: this.state.user,
+        data: this.state.data,
+        questionsArray: totalQuestions,
+        count: this.state.count,
+        flag: true,
+      }),
+    });
+
+    }
+    else if (y == 'Flags'){
+      console.log("Flag True");
+      fetch('http://35.208.160.247:8080/geobee/saveUserSession', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user: this.state.user,
+        data: this.state.data,
+        questionsArray: totalQuestions,
+        count: this.state.count,
+        flag: true,
+      }),
+    });
+
+    }
+    else {
+      console.log("Else")
+      fetch('http://35.208.160.247:8080/geobee/saveUserSession', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user: this.state.user,
+        data: this.state.data,
+        questionsArray: totalQuestions,
+        count: this.state.count,
+        flag: false,
+      }),
+    });
+
+    }
+  }
     ////console.log('*********count', this.state.count);
     ////console.log('*********user', this.state.user);
     ////console.log('*********totalQuestions', totalQuestions);

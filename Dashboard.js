@@ -30,10 +30,12 @@ export default class Dashboard extends Component {
     const isUser = this.props.navigation.getParam('isUser', 'value');
     this.setState({user: user});
     this.setState({isUser: isUser});
+    console.log("YOLLLLLLoOOOOOOOOOOOOO")
+    console.log(user)
     
     //console.log(user);
     //console.log("IS USER THERE", isUser);
-    const url = `http://35.239.39.107:8080/geobee/getRandomFactOfTheDay`;
+    const url = `http://35.208.160.247:8080/geobee/getRandomFactOfTheDay`;
     fetch(url, {
       method: 'GET',
     })
@@ -48,11 +50,14 @@ export default class Dashboard extends Component {
   }
   onPress = () => {
     const user = this.props.navigation.getParam('user', 'value');
+    const apple = this.props.navigation.getParam('apple', 'value');
+    console.log("IM HWEWE")
+    if (apple == 'value') {
     let email = user.email;
     //console.log(email)
-    //http://35.239.39.107:8080/geobee/getUserSavedSession?email=soumyathebest1@gmail.com
+    //http://35.208.160.247:8080/geobee/getUserSavedSession?email=soumyathebest1@gmail.com
     //Alert.alert("data1 YOLO", email)
-    const url = `http://35.239.39.107:8080/geobee/getUserSavedSession?email=${email}`;
+    const url = `http://35.208.160.247:8080/geobee/getUserSavedSession?email=${email}`;
    
       fetch(url, {
         method: 'GET',
@@ -72,12 +77,12 @@ export default class Dashboard extends Component {
         });
       //Alert.alert("data1 YOLO", this.state.data1)
       //console.log("data1 YOLO", this.state.data1.length == 0)
-      //console.log("data1 YOLO1", this.state.data1.length)
+      console.log("data1 YOLO1", this.state.data1.length)
       //console.log("data1 YOLO2", this.state.data1)
     if (this.state.data1.length != 0) {
-    console.log(this.state.data1.flag)
+    console.log(this.state.data1, "DATA ONE IN DASHBOARD")
     this.props.navigation.navigate('Quiz', {
-      data1: this.state.data1.questions,
+      data1: this.state.data1,
       y: 'Resume',
       user: user,
     });
@@ -85,11 +90,56 @@ export default class Dashboard extends Component {
   else {
     //console.log("NOPE")
   }
+}
+else {
+  let userId = user.userId;
+  //console.log(email)
+  //http://35.208.160.247:8080/geobee/getUserSavedSession?email=soumyathebest1@gmail.com
+  //Alert.alert("data1 YOLO", email)
+  const url = `http://35.208.160.247:8080/geobee/getAppleUserSavedSession?userId=${userId}`;
+ 
+    fetch(url, {
+      method: 'GET',
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        //console.log("LOG ME, PLEASE! ",json);
+       /// Alert.alert("data1 YOLO json", json);
+        
+       
+        this.setState({data1: json})
+        console.log("LOG ME, PLEASE! ", json)
+          .catch((err) => console.error(err))
+          .finally(() => {
+            this.setState({fetching: false});
+          });
+      });
+    //Alert.alert("data1 YOLO", this.state.data1)
+    //console.log("data1 YOLO", this.state.data1.length == 0)
+    //console.log("data1 YOLO1", this.state.data1.length)
+    //console.log("data1 YOLO2", this.state.data1)
+  if (this.state.data1.length != 0) {
+  console.log(this.state.data1.flag)
+  console.log(this.state.data1.questionsArray)
+  console.log("NEAR FAR WHERE EVER YOU ARE")
+  this.props.navigation.navigate('Quiz', {
+    data1: this.state.data1,
+    y: 'Resume',
+    user: user,
+  });
+}
+else {
+  //console.log("NOPE")
+}
+}
   };
   render() {
     
     //console.log(this.state.data);
     const user = this.props.navigation.getParam('user', 'value');
+    const apple = this.props.navigation.getParam('apple', 'value');
+    console.log(apple)
+    console.log("IS APPLE REALLY TRUE IN DASHBOARD", apple)
     //console.log('life');
     
       
@@ -114,8 +164,14 @@ export default class Dashboard extends Component {
                 marginBottom: '5%',
               }}
             />
-            {this.state.user != 'value' && (
+            {this.state.user != 'value' && apple == 'value' && (
               <Text style={styles.Green}> Welcome {user.name}</Text>
+            )}
+            {apple != 'value' && (
+              <Text style={styles.Green}> Welcome {user.firstName + " " + user.lastName}</Text>
+            )}
+            {this.state.user == 'value' && (
+              <Text style={styles.Green}> Welcome Player</Text>
             )}
             <FlatList
               data={this.state.data}
@@ -157,7 +213,26 @@ export default class Dashboard extends Component {
               </Text>
             </Button>
             )}
-            {this.state.user != 'value' && (
+            {apple != 'value' && (
+              <Button
+              large
+              full
+              style={styles.StyleforButton2}
+              onPress={() =>
+                this.props.navigation.navigate('ChooseYourQuiz', {user: user, isAppleTrue: true})
+              }>
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: '500',
+                  color: 'black',
+                  textAlign: 'center',
+                }}>
+                New Game
+              </Text>
+            </Button>
+            )}
+            {this.state.user != 'value' && apple == 'value' && (
                <Button
                large
                full

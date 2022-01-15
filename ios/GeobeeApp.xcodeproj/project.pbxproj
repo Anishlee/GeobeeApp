@@ -9,7 +9,9 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* GeobeeAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* GeobeeAppTests.m */; };
 		0105A3612664087900C7FD9A /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 0105A3602664087900C7FD9A /* main.jsbundle */; };
+		0170A824271B3C6E00F8DC90 /* libswiftWebKit.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0170A823271B3C6D00F8DC90 /* libswiftWebKit.tbd */; };
 		01DC385325F46D400032956E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 01DC385225F46D400032956E /* GoogleService-Info.plist */; };
+		01F767E1271BDFF100F6D95D /* libAppAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01F767E0271BDFF100F6D95D /* libAppAuth.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -47,12 +49,14 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* GeobeeAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GeobeeAppTests.m; sourceTree = "<group>"; };
 		0105A3602664087900C7FD9A /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		0170A823271B3C6D00F8DC90 /* libswiftWebKit.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftWebKit.tbd; path = usr/lib/swift/libswiftWebKit.tbd; sourceTree = SDKROOT; };
 		0198A534267E66DC002DECC9 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		0198A536267E6719002DECC9 /* Foundation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		0198A538267E6754002DECC9 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		0198A53A267E67A8002DECC9 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		01A3FEB62571A55A00BE95C9 /* GeobeeApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = GeobeeApp.entitlements; path = GeobeeApp/GeobeeApp.entitlements; sourceTree = "<group>"; };
 		01DC385225F46D400032956E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		01F767E0271BDFF100F6D95D /* libAppAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* GeobeeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GeobeeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = GeobeeApp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = GeobeeApp/AppDelegate.m; sourceTree = "<group>"; };
@@ -91,6 +95,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01F767E1271BDFF100F6D95D /* libAppAuth.a in Frameworks */,
+				0170A824271B3C6E00F8DC90 /* libswiftWebKit.tbd in Frameworks */,
 				9A0F78E19549469B420F1BA3 /* libPods-GeobeeApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -154,6 +160,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				01F767E0271BDFF100F6D95D /* libAppAuth.a */,
+				0170A823271B3C6D00F8DC90 /* libswiftWebKit.tbd */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				6C1B17BC580754C6DA217CE9 /* libPods-GeobeeApp.a */,
@@ -393,7 +401,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -757,7 +765,7 @@
 				CODE_SIGN_ENTITLEMENTS = GeobeeApp/GeobeeApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 5R7W5A78MN;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = GeobeeApp/Info.plist;
@@ -766,7 +774,16 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.3;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/swift",
+				);
+				"LIBRARY_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/swift",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/AppAuth\"",
+				);
+				MARKETING_VERSION = 1.8;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -790,7 +807,7 @@
 				CODE_SIGN_ENTITLEMENTS = GeobeeApp/GeobeeApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 5R7W5A78MN;
 				INFOPLIST_FILE = GeobeeApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -798,7 +815,16 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.3;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/swift",
+				);
+				"LIBRARY_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/swift",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/AppAuth\"",
+				);
+				MARKETING_VERSION = 1.8;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -979,7 +1005,6 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=*]" = arm64;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -999,11 +1024,6 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
-					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1044,7 +1064,6 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=*]" = arm64;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1057,11 +1076,6 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
-					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = YES;

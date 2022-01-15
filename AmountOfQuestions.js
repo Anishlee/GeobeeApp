@@ -23,7 +23,7 @@ export default class AmountOfQuestions extends Component {
   /*
    const Amount = this.props.navigation.getParam('amount', 'value');
     //console.log(Amount);
-    const url = `http://35.239.39.107:8080/geobee/getCapitalQuestions?size=${Amount}`;
+    const url = `http://35.208.160.247:8080/geobee/getCapitalQuestions?size=${Amount}`;
     fetch(url, {
       method: 'GET',
     })
@@ -36,12 +36,71 @@ export default class AmountOfQuestions extends Component {
           });
       });
       */
-  //http://35.239.39.107:8080/geobee/getQuestionsByState?stateName=Minnesota&size=10
+  //http://35.208.160.247:8080/geobee/getQuestionsByState?stateName=Minnesota&size=10
 
   onPress(Amount) {
     if (Amount != '') {
+      console.log("if amount")
       const x = this.props.navigation.getParam('x', 'value');
       const user = this.props.navigation.getParam('user', {});
+      const isAppleTrue = this.props.navigation.getParam('isAppleTrue', 'value');
+      console.log(isAppleTrue, "AMOUNT OF QUESTIONS isAppleTrue")
+      console.log(x, "AMOUNT OF QUESTIONS X")
+      const appleTest='';
+      if (isAppleTrue != 'value') {
+        console.log("AMOUNT OF QUESTIONS", isAppleTrue)
+      if (x == 'States') {
+        console.log("STATES")
+        this.props.navigation.navigate('Quiz', {
+          amount: Amount,
+          y: 'States',
+          user: user,
+          isAppleTrue: true,
+          appleTest:'apple'
+        });
+      }
+      if (x == 'General') {
+        console.log("GENERAL")
+        ///getMiscQuestions
+        this.props.navigation.navigate('Quiz', {
+          amount: Amount,
+          y: 'General',
+          user: user,
+          isAppleTrue: true
+        });
+      }
+      if (x == 'Nicknames') {
+        console.log("NICKNAMES")
+        this.props.navigation.navigate('Quiz', {
+          amount: Amount,
+          y: 'Nicknames',
+          user: user,
+          isAppleTrue: true
+        });
+      }
+      if (x == 'Flags') {
+        console.log("FLAGS")
+        this.props.navigation.navigate('Quiz', {
+          amount: Amount,
+          y: 'Flags',
+          user: user,
+          isAppleTrue: true
+        });
+      }
+      if (x == 'Capitals') {
+        console.log("CAPITALS")
+        this.props.navigation.navigate('Quiz', {
+          amount: Amount,
+          y: 'Capitals',
+          user: user,
+          
+          isAppleTrue: true,
+         
+        });
+      }
+    }
+    else { 
+      console.log("else amount")
       if (x == 'States') {
         this.props.navigation.navigate('Quiz', {
           amount: Amount,
@@ -78,9 +137,11 @@ export default class AmountOfQuestions extends Component {
           user: user,
         });
       }
-    } else {
-      this.setState({invalidQuestions: ''});
     }
+  }
+     else {
+      this.setState({invalidQuestions: ''});
+    } 
   }
   render() {
     return (
